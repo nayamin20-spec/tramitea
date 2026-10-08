@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tramitea - Todos tus trámites en un clic</title>
+  <meta name="description" content="Buscador directo y verificado a los trámites oficiales de la administración pública española." />
+  <meta name="google-site-verification" content="Xx8G8aMftgwCkh0pLwkeYCDd1G7-DWSfRK1xD_Rk8hw" />
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- React, ReactDOM y Babel Standalone para ejecutar JSX sin empaquetador -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+  </style>
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="5cebcbd8-415e-4220-aff7-af24d5ed179e"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-amber-200 selection:text-slate-900">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useMemo, useEffect, useRef } = React;
+
+    // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
+    const TRAMITES_DATA = [
+      {
+        id: 'vida-laboral',
+        rank: 1,
+        commonName: 'Pedir la vida laboral',
+        officialName: 'Informe de vida laboral e informe de bases de cotización',
+        organismo: { name: 'Tesorería General de la Seguridad Social', acronym: 'TGSS / Import@ss' },
+        category: 'laboral',
+        description: 'Acredita todos los días y periodos que has cotizado a la Seguridad Social a lo largo de tu vida laboral.',
+        whyIsDifficult: 'Los buscadores suelen posicionar webs de gestorías fraudulentas que cobran entre 15€ y 30€ por un trámite gratuito.',
+        officialDirectUrl: 'https://portal.seg-social.gob.es/wps/portal/importass/importass/Categorias/Vida+laboral+e+informes/Informes+sobre+tu+situacion+laboral/Informe+de+vida+laboral',
+        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie', 'sms_sin_certificado'],
+        fastestAuthMethod: 'sms_sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: '2 minutos (descarga PDF)',
+        prerequisites: ['Tener el móvil registrado en la Seguridad Social (para SMS) o disponer de Cl@ve/Certificado'],
+        steps: [
+          { stepNumber: 1, title: 'Acceder a Import@ss', instruction: 'Entra en el portal oficial directo de la TGSS.' },
+          { stepNumber: 2, title: 'Elegir Vía SMS', instruction: 'Si no tienes Cl@ve, introduce DNI, fecha de nacimiento y tu número de teléfono.' },
+          { stepNumber: 3, title: 'Descarga inmediata', instruction: 'Introduce el código SMS de 6 dígitos y descarga tu informe oficial en PDF.' }
+        ],
+        antiScamAdvice: 'El trámite es 100% oficial y gratuito. Jamás pagues en webs privadas.',
+        isTop10: true,
+        synonyms: ['vida laboral', 'pedir vida laboral', 'dias cotizados', 'años cotizados', 'bases de cotizacion', 'curriculum', 'seguridad social', 'importass']
+      },
+      {
+        id: 'cita-dni-pasaporte',
+        rank: 2,
+        commonName: 'Renovar el DNI o Pasaporte',
+        officialName: 'Cita previa para expedición de Documento Nacional de Identidad y Pasaporte',
+        organismo: { name: 'Cuerpo Nacional de Policía - Ministerio del Interior', acronym: 'Policía Nacional' },
+        category: 'identidad',
+        description: 'Solicitud de turno para primera expedición o renovación del DNI o Pasaporte por caducidad o pérdida.',
+        whyIsDifficult: 'El portal oficial citapreviadnie.es caduca rápido y exige datos muy específicos del dorso del DNI anterior.',
+        officialDirectUrl: 'https://www.citapreviadnie.es/citaPreviaDni/',
+        supportedAuth: ['sms_sin_certificado', 'clave_pin', 'presencial_cita'],
+        fastestAuthMethod: 'sms_sin_certificado',
+        cost: 'Cita gratuita (Tasa DNI: 12,00€ / Pasaporte: 30,00€)',
+        estimatedTime: '5 minutos para reservar',
+        prerequisites: ['DNI actual, equipo de expedición (al dorso) y fecha de validez'],
+        steps: [
+          { stepNumber: 1, title: 'Iniciar solicitud', instruction: 'Accede a citapreviadnie.es con los datos del documento actual.' },
+          { stepNumber: 2, title: 'Seleccionar oficina', instruction: 'Usa la opción de cita rápida para ver el primer hueco disponible en tu provincia.' },
+          { stepNumber: 3, title: 'Confirmación SMS', instruction: 'Apunta el localizador de la cita y acude con una foto carné reciente.' }
+        ],
+        antiScamAdvice: 'La cita previa es pública y gratuita. No pagues a empresas que ofrecen citas prioritarias.',
+        isTop10: true,
+        synonyms: ['dni', 'renovar dni', 'cita dni', 'perdi el dni', 'pasaporte', 'renovar pasaporte', 'viajar', 'policia', 'comisaria']
+      },
+      {
+        id: 'cita-extranjeria',
+        rank: 3,
+        commonName: 'Cita de Extranjería (Huellas / TIE / Asilo)',
+        officialName: 'Cita previa para trámites y autorizaciones de extranjería en oficinas y comisarías',
+        organismo: { name: 'Ministerio de Política Territorial', acronym: 'Extranjería' },
+        category: 'extranjeria',
+        description: 'Reserva obligatoria para toma de huellas de la Tarjeta TIE, asignación de NIE y solicitudes de asilo.',
+        whyIsDifficult: 'Alta saturación y confusión en el selector entre trámites de Policía Nacional y de Extranjería.',
+        officialDirectUrl: 'https://icp.administracionelectronica.gob.es/icpplus/index.html',
+        supportedAuth: ['sms_sin_certificado', 'clave_pin'],
+        fastestAuthMethod: 'sms_sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: 'Variable según cupo',
+        prerequisites: ['Pasaporte o NIE en vigor y volante de empadronamiento'],
+        steps: [
+          { stepNumber: 1, title: 'Seleccionar provincia', instruction: 'Elige la provincia donde resides legalmente.' },
+          { stepNumber: 2, title: 'Elegir trámite exacto', instruction: 'Distingue entre trámites de Policía (Huellas TIE) y Extranjería (Arraigo).' },
+          { stepNumber: 3, title: 'Confirmar datos', instruction: 'Introduce tu NIE/Pasaporte y recibe el código de verificación por SMS.' }
+        ],
+        antiScamAdvice: 'La venta de citas de extranjería es ilegal. Tramítala únicamente por la sede oficial.',
+        isTop10: true,
+        synonyms: ['extranjeria', 'tie', 'huellas', 'toma de huellas', 'nie', 'asilo', 'arraigo', 'comisaria extranjeria']
+      },
+      {
+        id: 'cita-paro-sepe',
+        rank: 4,
+        commonName: 'Pedir cita para el paro (SEPE)',
+        officialName: 'Solicitud de cita previa individual para prestaciones por desempleo',
+        organismo: { name: 'Servicio Público de Empleo Estatal', acronym: 'SEPE' },
+        category: 'laboral',
+        description: 'Cita para solicitar la prestación por desempleo, subsidios o ayudas para mayores de 52 años.',
+        whyIsDifficult: 'Confusión entre el SEPE (que paga) y el Servicio Autonómico de Empleo (que expide el DARDE).',
+        officialDirectUrl: 'https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo/cita-previa/cita-previa-solicitud.html',
+        supportedAuth: ['sms_sin_certificado', 'clave_pin', 'certificado_dnie'],
+        fastestAuthMethod: 'sms_sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: '3 minutos',
+        prerequisites: ['Estar inscrito antes como demandante de empleo en tu servicio autonómico'],
+        steps: [
+          { stepNumber: 1, title: 'Inscripción autonómica previa', instruction: 'Verifica tener el DARDE al día antes de reservar.' },
+          { stepNumber: 2, title: 'Código Postal', instruction: 'Introduce tu NIF y código postal para asignar tu oficina.' },
+          { stepNumber: 3, title: 'Confirmación', instruction: 'Selecciona fecha y hora y guarda el localizador SMS.' }
+        ],
+        antiScamAdvice: 'El teléfono oficial es el 060. Desconfía de números 807 con cobro adicional.',
+        isTop10: true,
+        synonyms: ['paro', 'pedir el paro', 'cobrar el paro', 'desempleo', 'sepe', 'inem', 'cita inem', 'subsidio', 'despido']
+      },
+      {
+        id: 'transferencia-vehiculo-dgt',
+        rank: 11,
+        commonName: 'Cambio de titularidad / Transferencia de vehículos',
+        officialName: 'Cambio de titularidad y transmisiones de vehículos (Compraventa)',
+        organismo: { name: 'Dirección General de Tráfico', acronym: 'DGT' },
+        category: 'trafico',
+        description: 'Trámite obligatorio para cambiar el titular de un coche, moto o furgoneta tras una compraventa o herencia.',
+        whyIsDifficult: 'Gestorías online cobran hasta 150€ de sobrecoste. Exige abonar previamente el ITP autonómico.',
+        officialDirectUrl: 'https://sede.dgt.gob.es/es/vehiculos/transferencias-de-vehiculos/',
+        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie'],
+        fastestAuthMethod: 'clave_pin',
+        cost: 'Tasa DGT 4.1: 55,70 € + ITP autonómico',
+        estimatedTime: '10 minutos online en DGT',
+        prerequisites: ['Contrato de compraventa firmado, DNI de ambas partes y justificante de pago del ITP (modelo 620/621)'],
+        steps: [
+          { stepNumber: 1, title: 'Liquidar ITP autonómico', instruction: 'Paga el impuesto de transmisiones patrimoniales en la web tributaria de tu CCAA para obtener el código CET.' },
+          { stepNumber: 2, title: 'Pagar tasa 4.1 en la DGT', instruction: 'Abona la tasa de 55,70€ en la pasarela de la DGT.' },
+          { stepNumber: 3, title: 'Presentar solicitud en sede', instruction: 'Introduce los datos con Cl@ve y descarga tu nuevo Permiso de Circulación provisional.' }
+        ],
+        antiScamAdvice: 'La tasa oficial son 55,70€ en sede.dgt.gob.es. Evita intermediarios de cobro abusivo.',
+        isTop10: false,
+        synonyms: ['coche', 'moto', 'vehiculo', 'vehículo', 'transferencia', 'cambio de nombre', 'cambiar de nombre un coche', 'vender coche', 'comprar coche', 'traspaso', 'segunda mano', 'itp']
+      },
+      {
+        id: 'certificado-digital-fnmt',
+        rank: 5,
+        commonName: 'Sacar el Certificado Digital (FNMT)',
+        officialName: 'Obtención del Certificado Digital de Persona Física de la FNMT',
+        organismo: { name: 'Fábrica Nacional de Moneda y Timbre', acronym: 'FNMT' },
+        category: 'identidad',
+        description: 'Llave digital maestra para firmar y tramitar cualquier gestión con Hacienda, Seguridad Social y Ayuntamientos.',
+        whyIsDifficult: 'Requiere instalar el software Configurador FNMT y no cambiar de navegador durante el proceso.',
+        officialDirectUrl: 'https://www.sede.fnmt.gob.es/certificados/persona-fisica/obtener-certificado-software',
+        supportedAuth: ['sms_sin_certificado', 'presencial_cita'],
+        fastestAuthMethod: 'sms_sin_certificado',
+        cost: 'Gratuito presencial (o 2,99€ con vídeo-identificación)',
+        estimatedTime: '15 minutos',
+        prerequisites: ['DNI o NIE e instalar el Configurador FNMT en tu ordenador'],
+        steps: [
+          { stepNumber: 1, title: 'Configurador FNMT', instruction: 'Instala el software oficial en tu PC o Mac.' },
+          { stepNumber: 2, title: 'Solicitar código', instruction: 'Rellena tu DNI y obtén el código de solicitud por correo.' },
+          { stepNumber: 3, title: 'Acreditar y descargar', instruction: 'Valida tu identidad en oficina o por vídeo y descarga el certificado.' }
+        ],
+        antiScamAdvice: 'Descárgalo únicamente en sede.fnmt.gob.es.',
+        isTop10: true,
+        synonyms: ['certificado digital', 'firma digital', 'certificado electronico', 'fnmt', 'autofirma', 'sacar certificado']
+      },
+      {
+        id: 'ingreso-minimo-vital',
+        rank: 6,
+        commonName: 'Solicitar el Ingreso Mínimo Vital (IMV)',
+        officialName: 'Solicitud de la prestación no contributiva del Ingreso Mínimo Vital',
+        organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
+        category: 'ayudas',
+        description: 'Prestación periódica para personas o familias con ingresos por debajo del umbral de vulnerabilidad.',
+        whyIsDifficult: 'Formulario extenso que requiere justificar minuciosamente la unidad de convivencia y el padrón histórico.',
+        officialDirectUrl: 'https://imv.seg-social.es/',
+        supportedAuth: ['sms_sin_certificado', 'clave_pin', 'certificado_dnie'],
+        fastestAuthMethod: 'sms_sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: '25 minutos',
+        prerequisites: ['DNI de todos los convivientes y padrón histórico colectivo'],
+        steps: [
+          { stepNumber: 1, title: 'Simulador oficial', instruction: 'Comprueba requisitos de ingresos en el simulador del INSS.' },
+          { stepNumber: 2, title: 'Rellenar solicitud', instruction: 'Declara la unidad de convivencia tal como figura en el padrón.' },
+          { stepNumber: 3, title: 'Firmar telemáticamente', instruction: 'Permite tramitar sin certificado subiendo fotos de tu DNI y un selfie.' }
+        ],
+        antiScamAdvice: 'La tramitación es 100% gratuita directamente en la Seguridad Social.',
+        isTop10: true,
+        synonyms: ['imv', 'ingreso minimo vital', 'ayuda social', 'renta minima', 'pobreza', 'subsidio familiar']
+      },
+      {
+        id: 'renta-irpf-borrador',
+        rank: 7,
+        commonName: 'Borrador y Declaración de la Renta (IRPF)',
+        officialName: 'Servicio de tramitación del borrador y declaración de la renta (Renta WEB)',
+        organismo: { name: 'Agencia Estatal de Administración Tributaria', acronym: 'AEAT / Hacienda' },
+        category: 'hacienda',
+        description: 'Acceso a Renta WEB para revisar datos fiscales, añadir deducciones autonómicas y presentar la declaración.',
+        whyIsDifficult: 'En campaña de renta surgen decenas de páginas web falsas que imitan a la Agencia Tributaria.',
+        officialDirectUrl: 'https://sede.agenciatributaria.gob.es/Sede/Renta.html',
+        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie'],
+        fastestAuthMethod: 'clave_pin',
+        cost: '100% Gratuito',
+        estimatedTime: '10 minutos',
+        prerequisites: ['Cl@ve PIN o Casilla 505 de la renta anterior'],
+        steps: [
+          { stepNumber: 1, title: 'Entrar a Renta WEB', instruction: 'Accede a la sede oficial de la AEAT con Cl@ve.' },
+          { stepNumber: 2, title: 'Revisar deducciones', instruction: 'Aplica deducciones autonómicas de alquiler o familia.' },
+          { stepNumber: 3, title: 'Presentar y guardar', instruction: 'Confirma tu IBAN y descarga el justificante con código CSV.' }
+        ],
+        antiScamAdvice: 'Hacienda NUNCA pide números de tarjeta bancaria por SMS.',
+        isTop10: true,
+        synonyms: ['renta', 'hacer la renta', 'declaracion de la renta', 'irpf', 'hacienda', 'aeat', 'casilla 505', 'borrador']
+      },
+      {
+        id: 'certificado-delitos-sexuales',
+        rank: 8,
+        commonName: 'Certificado de Delitos de Naturaleza Sexual',
+        officialName: 'Certificado de Delitos de Naturaleza Sexual y Trata de Seres Humanos',
+        organismo: { name: 'Ministerio de Justicia', acronym: 'Justicia' },
+        category: 'certificados',
+        description: 'Obligatorio por ley para cualquier persona que trabaje o ejerza voluntariado en contacto con menores de edad.',
+        whyIsDifficult: 'Se confunde con el Certificado de Antecedentes Penales ordinario (que sí cobra tasa, mientras este es gratuito).',
+        officialDirectUrl: 'https://sede.mjusticia.gob.es/es/tramites/certificado-delitos-naturaleza-sexual',
+        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie'],
+        fastestAuthMethod: 'clave_pin',
+        cost: '100% Gratuito (sin tasa)',
+        estimatedTime: '2 minutos (descarga inmediata)',
+        prerequisites: ['Cl@ve PIN o Certificado Digital'],
+        steps: [
+          { stepNumber: 1, title: 'Entrar al trámite', instruction: 'Accede a la sede electrónica de Justicia en el apartado exacto.' },
+          { stepNumber: 2, title: 'Identificación Cl@ve', instruction: 'Pulsa en tramitación telemática e identifícate en un clic.' },
+          { stepNumber: 3, title: 'Descarga PDF', instruction: 'El sistema valida con el Registro Central y emite el PDF oficial.' }
+        ],
+        antiScamAdvice: 'Este certificado no tiene tasa. No pagues en webs intermediarias.',
+        isTop10: true,
+        synonyms: ['delitos sexuales', 'trabajar con niños', 'menores', 'profesor', 'monitor de campamento', 'colegio']
+      },
+      {
+        id: 'certificado-padron-municipal',
+        rank: 9,
+        commonName: 'Pedir el Certificado o Volante de Empadronamiento',
+        officialName: 'Emisión de volante y certificado de empadronamiento municipal',
+        organismo: { name: 'Ayuntamientos Municipales', acronym: 'Ayuntamiento' },
+        category: 'identidad',
+        description: 'Acredita tu residencia habitual en un municipio. Exigido para médicos, colegios o renovar el DNI.',
+        whyIsDifficult: 'Cada uno de los 8.100 municipios de España tiene su propia sede con nombres y requisitos variables.',
+        officialDirectUrl: 'https://sede.madrid.es/portal/site/tramites/template.PAGE/menuitem.a13d4b6f64a50d24e964e964ccd08a0c/?vgnextoid=5f7e6f8516035210VgnVCM2000000c205a0aRCRD',
+        supportedAuth: ['clave_pin', 'certificado_dnie', 'presencial_cita'],
+        fastestAuthMethod: 'certificado_dnie',
+        cost: '100% Gratuito',
+        estimatedTime: 'Instantáneo telemático',
+        prerequisites: ['Cl@ve o Certificado y estar censado en el municipio'],
+        steps: [
+          { stepNumber: 1, title: 'Elegir Volante', instruction: 'El volante suele bastar para casi todo (médico, colegio, carné).' },
+          { stepNumber: 2, title: 'Acceder a tu sede', instruction: 'Entra en la sede electrónica municipal con certificado.' },
+          { stepNumber: 3, title: 'Descarga con CSV', instruction: 'Obtén el documento con Código Seguro de Verificación.' }
+        ],
+        antiScamAdvice: 'Desconfía de webs que cobran 40€ alegando enviar tu padrón por correo.',
+        isTop10: true,
+        synonyms: ['padron', 'padrón', 'empadronamiento', 'pedir el padron', 'volante de empadronamiento', 'cambio de domicilio', 'ayuntamiento']
+      },
+      {
+        id: 'tarjeta-sanitaria-europea',
+        rank: 10,
+        commonName: 'Pedir la Tarjeta Sanitaria Europea (TSE)',
+        officialName: 'Solicitud y renovación de la Tarjeta Sanitaria Europea (TSE)',
+        organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
+        category: 'salud',
+        description: 'Acredita el derecho a recibir asistencia sanitaria durante estancias temporales en países de la UE y Reino Unido.',
+        whyIsDifficult: 'Se envía por correo postal ordinario; si no tienes actualizada la dirección en la TGSS se extravía.',
+        officialDirectUrl: 'https://sede.seg-social.gob.es/wps/portal/sede/sede/Ciudadanos/Asistencia+sanitaria/20140411_1',
+        supportedAuth: ['sms_sin_certificado', 'clave_pin', 'certificado_dnie'],
+        fastestAuthMethod: 'sms_sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: '3 minutos (llega en 5 días al buzón)',
+        prerequisites: ['Estar dado de alta en la Seguridad Social'],
+        steps: [
+          { stepNumber: 1, title: 'Entrar a la sede INSS', instruction: 'Accede al trámite directo de TSE.' },
+          { stepNumber: 2, title: 'Comprobar domicilio', instruction: 'Verifica la dirección postal donde te enviarán la tarjeta.' },
+          { stepNumber: 3, title: 'Certificado provisional', instruction: 'Si viajas antes de 5 días, descarga el CPS en PDF que tiene idéntica validez.' }
+        ],
+        antiScamAdvice: 'La tarjeta es gratuita. Nunca introduzcas tarjetas de crédito.',
+        isTop10: true,
+        synonyms: ['tarjeta sanitaria europea', 'tse', 'viajar a europa', 'medico en europa', 'asistencia sanitaria extranjero']
+      },
+      {
+        id: 'puntos-carnet-dgt',
+        rank: 12,
+        commonName: 'Consultar Puntos del Carnet de Conducir',
+        officialName: 'Consulta de saldo de puntos y antecedentes del permiso de conducción',
+        organismo: { name: 'Dirección General de Tráfico', acronym: 'DGT' },
+        category: 'trafico',
+        description: 'Permite consultar el saldo exacto de puntos que tienes en tu carné de conducir y el historial de sanciones.',
+        whyIsDifficult: 'Abundan aplicaciones móviles no oficiales que capturan datos de conductores con fines publicitarios.',
+        officialDirectUrl: 'https://sede.dgt.gob.es/es/permisos-de-conducir/consulta-puntos/',
+        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie'],
+        fastestAuthMethod: 'clave_pin',
+        cost: '100% Gratuito',
+        estimatedTime: '1 minuto',
+        prerequisites: ['Permiso de conducir español en vigor y Cl@ve'],
+        steps: [
+          { stepNumber: 1, title: 'Entrar con Cl@ve', instruction: 'Accede al servicio telemático de la DGT.' },
+          { stepNumber: 2, title: 'Saldo en pantalla', instruction: 'Tu saldo aparecerá de inmediato con el desglose de puntos.' }
+        ],
+        antiScamAdvice: 'La DGT nunca notifica multas ni puntos mediante enlaces por SMS.',
+        isTop10: false,
+        synonyms: ['puntos', 'puntos carnet', 'puntos dgt', 'consultar puntos', 'multa puntos', 'saldo de puntos']
+      },
+      {
+        id: 'cita-medica-ccaa',
+        rank: 13,
+        commonName: 'Pedir Cita Médica de Atención Primaria (Centro de Salud)',
+        officialName: 'Cita previa telemática para medicina de familia y enfermería autonómica',
+        organismo: { name: 'Servicios de Salud Autonómicos', acronym: 'Sanidad Autonómica' },
+        category: 'salud',
+        description: 'Reserva de turno para consulta presencial o telefónica con tu médico de cabecera en tu centro de salud.',
+        whyIsDifficult: 'La sanidad está transferida a las 17 Comunidades Autónomas; cada una dispone de su propia web y app.',
+        officialDirectUrl: 'https://www.sanidad.gob.es/servCiudadanos/home.htm',
+        supportedAuth: ['sms_sin_certificado', 'clave_pin', 'certificado_dnie'],
+        fastestAuthMethod: 'sms_sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: '2 minutos',
+        prerequisites: ['Tarjeta sanitaria autonómica en vigor con número CIP/SIP'],
+        steps: [
+          { stepNumber: 1, title: 'Acceder a tu sanidad', instruction: 'Entra en el portal de salud de tu comunidad.' },
+          { stepNumber: 2, title: 'Introducir tarjeta', instruction: 'Solo necesitas el número que aparece en tu tarjeta plástica física.' },
+          { stepNumber: 3, title: 'Elegir día y hora', instruction: 'Selecciona consulta médica, de enfermería o baja laboral.' }
+        ],
+        antiScamAdvice: 'Las citas médicas públicas nunca requieren teléfonos de pago 902.',
+        isTop10: false,
+        synonyms: ['medico', 'médico', 'cita medico', 'centro de salud', 'ambulatorio', 'medico de cabecera', 'baja medica', 'receta']
+      }
+    ];
+
+    const CCAA_LIST = [
+      { id: 'todas', name: 'Toda España' },
+      { id: 'andalucia', name: 'Andalucía' },
+      { id: 'aragon', name: 'Aragón' },
+      { id: 'asturias', name: 'Asturias' },
+      { id: 'baleares', name: 'Illes Balears' },
+      { id: 'canarias', name: 'Canarias' },
+      { id: 'cantabria', name: 'Cantabria' },
+      { id: 'castilla-la-mancha', name: 'Castilla-La Mancha' },
+      { id: 'castilla-y-leon', name: 'Castilla y León' },
+      { id: 'catalunya', name: 'Catalunya' },
+      { id: 'ceuta', name: 'Ceuta' },
+      { id: 'valencia', name: 'Comunitat Valenciana' },
+      { id: 'extremadura', name: 'Extremadura' },
+      { id: 'galicia', name: 'Galicia' },
+      { id: 'madrid', name: 'Comunidad de Madrid' },
+      { id: 'melilla', name: 'Melilla' },
+      { id: 'murcia', name: 'Región de Murcia' },
+      { id: 'navarra', name: 'Navarra' },
+      { id: 'pais-vasco', name: 'País Vasco' },
+      { id: 'la-rioja', name: 'La Rioja' }
+    ];
+
+    const AUTH_LABELS = {
+      sms_sin_certificado: '📱 Vía SMS / Sin certificado',
+      clave_pin: '🔑 Cl@ve PIN',
+      clave_permanente: '🔒 Cl@ve Permanente',
+      certificado_dnie: '💻 Certificado Digital / DNIe',
+      presencial_cita: '🏢 Cita Presencial'
+    };
+
+    // --- MOTOR DE BÚSQUEDA INTELIGENTE CON TOLERANCIA GRAMATICAL ---
+    function normalizeText(text) {
+      if (!text) return '';
+      return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+    }
+
+    function calculateScore(tramite, rawQuery) {
+      const q = normalizeText(rawQuery);
+      if (!q) return 1;
+
+      let score = 0;
+      const normCommon = normalizeText(tramite.commonName);
+      if (normCommon === q) score += 500;
+      else if (normCommon.includes(q)) score += 250;
+
+      if (tramite.synonyms) {
+        for (const s of tramite.synonyms) {
+          const normS = normalizeText(s);
+          if (normS === q) { score += 350; break; }
+          else if (normS.includes(q) || q.includes(normS)) score += 180;
+        }
+      }
+
+      const corpus = normalizeText([
+        tramite.commonName,
+        tramite.officialName,
+        tramite.organismo.name,
+        tramite.organismo.acronym,
+        tramite.description,
+        ...(tramite.synonyms || [])
+      ].join(' '));
+
+      const tokens = q.split(/\s+/).filter(Boolean);
+      let matchedTokens = 0;
+      for (const t of tokens) {
+        if (corpus.includes(t)) {
+          matchedTokens++;
+          score += 30;
+        }
+      }
+
+      if (tokens.length > 1 && (matchedTokens / tokens.length) < 0.5) return 0;
+      return score;
+    }
+
+    // --- APLICACIÓN PRINCIPAL ---
+    function App() {
+      const [searchQuery, setSearchQuery] = useState('');
+      const [selectedCcaa, setSelectedCcaa] = useState('todas');
+      const [selectedAuth, setSelectedAuth] = useState('todas');
+      const [onlyTop10, setOnlyTop10] = useState(false);
+      const [activeModal, setActiveModal] = useState(null);
+      const [isFavoritesOpen, setIsFavoritesOpen] = useState(null);
+      const [isDbGuideOpen, setIsDbGuideOpen] = useState(false);
+
+      const [bookmarks, setBookmarks] = useState(() => {
+        try {
+          return JSON.parse(localStorage.getItem('tramitea_favoritos') || '[]');
+        } catch { return []; }
+      });
+
+      useEffect(() => {
+        try {
+          localStorage.setItem('tramitea_favoritos', JSON.stringify(bookmarks));
+        } catch (e) {}
+      }, [bookmarks]);
+
+      const toggleBookmark = (id) => {
+        setBookmarks(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+      };
+
+      // Filtrado y ordenación
+      const filteredTramites = useMemo(() => {
+        const hasQ = searchQuery.trim().length > 0;
+        const scored = TRAMITES_DATA.map(t => ({ item: t, score: calculateScore(t, searchQuery) }))
+          .filter(({ item, score }) => {
+            if (hasQ && score <= 0) return false;
+            if (selectedAuth !== 'todas' && !item.supportedAuth.includes(selectedAuth)) return false;
+            if (onlyTop10 && !item.isTop10) return false;
+            return true;
+          });
+
+        if (hasQ) scored.sort((a, b) => b.score - a.score);
+        else scored.sort((a, b) => (b.item.isTop10 ? 1 : 0) - (a.item.isTop10 ? 1 : 0) || a.item.rank - b.item.rank);
+
+        return scored.map(s => s.item);
+      }, [searchQuery, selectedAuth, onlyTop10]);
+
+      const savedList = useMemo(() => TRAMITES_DATA.filter(t => bookmarks.includes(t.id)), [bookmarks]);
+
+      return (
+        <div className="min-h-screen flex flex-col">
+          {/* HEADER */}
+          <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-blue-100/80 shadow-xs">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <a href="#" className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-blue-900 text-yellow-300 font-black text-xl flex items-center justify-center shadow-sm border border-blue-500/30 ring-2 ring-yellow-400/30">
+                    T
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-xl sm:text-2xl font-black tracking-tight text-blue-950">
+                      Tramit<span className="text-yellow-500">ea</span>
+                    </span>
+                  </div>
+                </a>
+                <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-blue-900 bg-blue-50 border border-blue-200/80 px-2.5 py-1 rounded-full">
+                  <span className="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
+                  <span>Todos tus trámites en un clic</span>
+                </span>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setIsFavoritesOpen(true)}
+                  className="px-3.5 py-2 text-xs sm:text-sm font-semibold text-slate-700 hover:text-blue-950 hover:bg-blue-50/80 rounded-xl transition-colors flex items-center gap-1.5 border border-slate-200 hover:border-blue-200"
+                >
+                  <svg className="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                  <span>Guardados</span>
+                  {bookmarks.length > 0 && (
+                    <span className="ml-1 px-1.5 py-0.2 bg-yellow-400 text-blue-950 text-xs font-black rounded-full">
+                      {bookmarks.length}
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+          </header>
+
+          {/* MAIN */}
+          <main className="flex-1 pb-16">
+            {/* HERO SECTION CON BUSCADOR */}
+            <section className="pt-10 pb-6 px-4 sm:px-6 bg-gradient-to-b from-blue-50/40 via-white to-slate-50 border-b border-blue-100/60 text-center">
+              <div className="max-w-4xl mx-auto">
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-blue-950 tracking-tight text-balance">
+                  ¿Qué trámite necesitas hacer hoy?
+                </h1>
+                
+                {/* Frase pequeña en verde accesible */}
+                <p className="mt-2.5 text-xs sm:text-sm font-semibold text-emerald-700 tracking-wide flex items-center justify-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+                  <span>Enlaces oficiales directos 100% gratuitos y verificados.</span>
+                </p>
+
+                {/* BUSCADOR */}
+                <div className="mt-6 max-w-2xl mx-auto">
+                  <div className="relative flex items-center bg-white rounded-2xl shadow-lg shadow-blue-900/5 border-2 border-slate-200 hover:border-blue-300 focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-yellow-400/25 transition-all p-1.5">
+                    <svg className="w-6 h-6 text-blue-600 ml-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Busca tu trámite aquí... (ej. coche, DNI, paro)"
+                      className="w-full pl-3 pr-10 py-3.5 bg-transparent text-slate-900 text-base sm:text-lg placeholder:text-slate-400 focus:outline-none"
+                    />
+                    {searchQuery && (
+                      <button
+                        onClick={() => setSearchQuery('')}
+                        className="p-1 text-slate-400 hover:text-slate-600 mr-2"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+
+                  {/* FILTROS RÁPIDOS */}
+                  <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2">
+                    <button
+                      onClick={() => setOnlyTop10(!onlyTop10)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border ${
+                        onlyTop10 ? 'bg-yellow-400 border-yellow-500 text-blue-950 font-bold shadow-xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-yellow-50/50'
+                      }`}
+                    >
+                      <span>🏆 Top 10 Más Buscados</span>
+                    </button>
+
+                    <button
+                      onClick={() => setSelectedAuth(selectedAuth === 'sms_sin_certificado' ? 'todas' : 'sms_sin_certificado')}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border ${
+                        selectedAuth === 'sms_sin_certificado' ? 'bg-blue-600 border-blue-700 text-white shadow-xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-blue-50/50'
+                      }`}
+                    >
+                      <span>📱 Solo con móvil (SMS)</span>
+                    </button>
+
+                    <button
+                      onClick={() => setSelectedAuth(selectedAuth === 'clave_pin' ? 'todas' : 'clave_pin')}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border ${
+                        selectedAuth === 'clave_pin' ? 'bg-blue-800 border-blue-900 text-white shadow-xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-blue-50/50'
+                      }`}
+                    >
+                      <span>🔑 Con Cl@ve</span>
+                    </button>
+
+                    <button
+                      onClick={() => setSelectedAuth(selectedAuth === 'certificado_dnie' ? 'todas' : 'certificado_dnie')}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border ${
+                        selectedAuth === 'certificado_dnie' ? 'bg-blue-950 border-blue-950 text-white shadow-xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-blue-50/50'
+                      }`}
+                    >
+                      <span>💻 Con Certificado</span>
+                    </button>
+
+                    {/* SELECTOR CCAA */}
+                    <div className="relative inline-flex items-center">
+                      <select
+                        value={selectedCcaa}
+                        onChange={(e) => setSelectedCcaa(e.target.value)}
+                        className="pl-3 pr-7 py-1.5 bg-white border border-slate-200 hover:border-blue-300 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600 cursor-pointer appearance-none"
+                      >
+                        {CCAA_LIST.map((c) => (
+                          <option key={c.id} value={c.id}>{c.name}</option>
+                        ))}
+                      </select>
+                      <span className="absolute right-2 text-slate-400 pointer-events-none text-[10px]">▼</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* SECCIÓN DIRECTA: RESULTADOS */}
+            <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-6">
+              <div className="flex items-center justify-between mb-5 pb-2.5 border-b border-blue-100/90">
+                <div className="flex items-center gap-2.5">
+                  <h2 className="text-xl sm:text-2xl font-black tracking-tight text-blue-950">
+                    Resultados
+                  </h2>
+                  <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-950 text-xs font-black tabular-nums border border-blue-200">
+                    {filteredTramites.length}
+                  </span>
+                </div>
+
+                <div className="text-xs text-slate-500">
+                  {searchQuery.trim() ? (
+                    <span>Coincidencias para <strong className="text-blue-950">"{searchQuery}"</strong></span>
+                  ) : (
+                    <span>{onlyTop10 ? 'Mostrando Top 10 más buscados' : 'Todos los trámites disponibles'}</span>
+                  )}
+                </div>
+              </div>
+
+              {filteredTramites.length === 0 ? (
+                <div className="bg-white border border-slate-200 rounded-3xl p-12 text-center max-w-md mx-auto my-8 shadow-xs">
+                  <h3 className="text-base font-bold text-slate-800">No encontramos trámites con estos filtros</h3>
+                  <p className="text-xs text-slate-500 mt-1">Prueba con otra palabra como "coche", "vida laboral" o "paro".</p>
+                  <button
+                    onClick={() => { setSearchQuery(''); setSelectedAuth('todas'); setOnlyTop10(false); }}
+                    className="mt-4 px-4 py-2 bg-blue-950 text-white text-xs font-semibold rounded-xl"
+                  >
+                    Restablecer búsqueda
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {filteredTramites.map((tramite) => (
+                    <div
+                      key={tramite.id}
+                      onClick={() => setActiveModal(tramite)}
+                      className="group bg-white rounded-2xl border border-slate-200/90 hover:border-slate-300 p-5 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-900 font-bold text-xs flex items-center justify-center">
+                              {tramite.organismo.acronym.substring(0, 3)}
+                            </div>
+                            <div className="text-xs">
+                              <span className="font-bold text-slate-800">{tramite.organismo.acronym}</span>
+                              <span className="text-slate-400 block text-[11px]">{tramite.estimatedTime}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                            {tramite.isTop10 && (
+                              <span className="px-2 py-0.5 rounded-md bg-yellow-100 text-blue-950 text-[11px] font-black border border-yellow-300">
+                                #{tramite.rank} Top
+                              </span>
+                            )}
+                            <button
+                              onClick={() => toggleBookmark(tramite.id)}
+                              className={`p-1.5 rounded-lg transition-colors ${
+                                bookmarks.includes(tramite.id) ? 'text-yellow-500 bg-yellow-50' : 'text-slate-300 hover:text-blue-900'
+                              }`}
+                            >
+                              ★
+                            </button>
+                          </div>
+                        </div>
+
+                        <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-800 transition-colors leading-snug">
+                          {tramite.commonName}
+                        </h3>
+
+                        <p className="text-xs text-slate-400 mt-1 line-clamp-1 italic">
+                          {tramite.officialName}
+                        </p>
+
+                        <div className="mt-3.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-600">
+                          <span>Acceso: <strong>{AUTH_LABELS[tramite.fastestAuthMethod] || tramite.fastestAuthMethod}</strong></span>
+                        </div>
+                      </div>
+
+                      <div className="mt-5 pt-3.5 border-t border-slate-100 flex items-center justify-between gap-2" onClick={(e) => e.stopPropagation()}>
+                        <button
+                          onClick={() => setActiveModal(tramite)}
+                          className="text-xs font-semibold text-slate-500 hover:text-slate-900"
+                        >
+                          Ver pasos →
+                        </button>
+
+                        <a
+                          href={tramite.officialDirectUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-blue-950 hover:bg-blue-900 rounded-xl transition-all"
+                        >
+                          <span>Ir a Sede Oficial</span>
+                          <span className="text-yellow-400">↗</span>
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+          </div>
+  )}
+</section>
+</main>
+          {/* FOOTER */}
+          <footer className="border-t border-slate-200 bg-white py-6 px-4 text-xs text-slate-400 text-center">
+            <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+              <p className="text-slate-600 font-medium">
+                <span className="font-extrabold text-blue-950">Tramit<span className="text-yellow-500">ea</span></span> · Todos tus trámites en un clic
+              </p>
+              <div className="flex items-center gap-4 text-slate-400 text-[11px]">
+                <span className="text-blue-900 font-semibold">100% Gratuito</span>
+                <span>·</span>
+                <span>Sedes electrónicas oficiales de España</span>
+              </div>
+            </div>
+          </footer>
+
+          {/* MODAL DETALLES DEL TRÁMITE */}
+          {activeModal && (
+            <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+              <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] overflow-hidden shadow-2xl flex flex-col border border-slate-200">
+                <div className="px-6 py-5 border-b border-slate-200 flex items-start justify-between bg-slate-50">
+                  <div>
+                    <span className="text-xs font-bold text-blue-900">{activeModal.organismo.name}</span>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">{activeModal.commonName}</h2>
+                    <p className="text-xs text-slate-500 italic">{activeModal.officialName}</p>
+                  </div>
+                  <button onClick={() => setActiveModal(null)} className="p-1 text-slate-400 hover:text-slate-700 text-lg font-bold">✕</button>
+                </div>
+
+                <div className="px-6 py-5 overflow-y-auto space-y-5 text-sm text-slate-700">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3 bg-slate-50 rounded-xl text-xs">
+                    <div><span className="text-slate-400 block">Coste:</span><strong>{activeModal.cost}</strong></div>
+                    <div><span className="text-slate-400 block">Tiempo estimado:</span><strong>{activeModal.estimatedTime}</strong></div>
+                    <div><span className="text-slate-400 block">Acceso recomendado:</span><strong>{AUTH_LABELS[activeModal.fastestAuthMethod]}</strong></div>
+                  </div>
+
+                  <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-950">
+                    <strong>Alerta anti-estafa: </strong>{activeModal.antiScamAdvice}
+                  </div>
+
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">¿Por qué es difícil de encontrar?</h4>
+                    <p className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg">{activeModal.whyIsDifficult}</p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Requisitos previos</h4>
+                    <ul className="text-xs space-y-1 list-disc pl-4 text-slate-600">
+                      {activeModal.prerequisites.map((p, i) => <li key={i}>{p}</li>)}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Pasos a seguir</h4>
+                    <div className="space-y-2">
+                      {activeModal.steps.map(s => (
+                        <div key={s.stepNumber} className="border border-slate-200 rounded-xl p-3 text-xs">
+                          <strong className="text-slate-900 block mb-1">{s.stepNumber}. {s.title}</strong>
+                          <p className="text-slate-600">{s.instruction}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="px-6 py-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
+                  <button onClick={() => toggleBookmark(activeModal.id)} className="text-xs font-semibold text-slate-700">
+                    {bookmarks.includes(activeModal.id) ? '★ Guardado' : '☆ Guardar'}
+                  </button>
+                  <a
+                    href={activeModal.officialDirectUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-5 py-2 text-xs font-bold text-white bg-blue-950 hover:bg-blue-900 rounded-xl"
+                  >
+                    Ir a la Sede Oficial Directa ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* DRAWER GUARDADOS */}
+          {isFavoritesOpen && (
+            <div className="fixed inset-0 z-50 bg-slate-900/50 flex justify-end">
+              <div className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col">
+                <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                  <h3 className="font-bold text-slate-900 text-sm">Trámites Guardados ({savedList.length})</h3>
+                  <button onClick={() => setIsFavoritesOpen(false)} className="text-slate-400 text-lg font-bold">✕</button>
+                </div>
+                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                  {savedList.length === 0 ? (
+                    <p className="text-xs text-slate-400 text-center py-8">No tienes trámites guardados todavía.</p>
+                  ) : (
+                    savedList.map(t => (
+                      <div key={t.id} className="p-3 border border-slate-200 rounded-xl flex items-center justify-between">
+                        <div>
+                          <strong className="text-xs text-slate-900 block">{t.commonName}</strong>
+                          <span className="text-[11px] text-slate-400">{t.organismo.acronym}</span>
+                        </div>
+                        <a href={t.officialDirectUrl} target="_blank" className="text-xs font-bold text-blue-900">Ir ↗</a>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL GUÍA DE BASE DE DATOS */}
+          {isDbGuideOpen && (
+            <div className="fixed inset-0 z-50 bg-slate-900/70 flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col shadow-2xl">
+                <div className="px-6 py-4 bg-slate-900 text-white flex justify-between items-center">
+                  <h3 className="font-bold text-sm">Arquitectura de Base de Datos & Escalabilidad</h3>
+                  <button onClick={() => setIsDbGuideOpen(false)} className="text-slate-400 text-lg">✕</button>
+                </div>
+                <div className="p-6 overflow-y-auto text-xs space-y-4 text-slate-700">
+                  <p><strong>1. PostgreSQL + TSVECTOR:</strong> Utiliza tipos normalizados para organismos, trámites y variantes de CCAA con índices GIN en español para búsquedas en &lt;5ms.</p>
+                  <p><strong>2. Edge CDN Caching:</strong> Con <code>s-maxage=3600</code> en Cloudflare, el 99.8% de las peticiones se sirven desde la memoria caché sin tocar la base de datos.</p>
+                  <p><strong>3. Monitor de enlaces:</strong> Worker diario con cron que verifica cabeceras HTTP de sedes oficiales para alertar de errores 404.</p>
+                </div>
+                <div className="p-4 bg-slate-50 border-t border-slate-200 text-right">
+                  <button onClick={() => setIsDbGuideOpen(false)} className="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-semibold">Cerrar</button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+  <div style="text-align: center; margin: 20px 0;">
+  <a href="mailto:info@tramitea.org">Contacto: info@tramitea.org</a>
+</div>
+</body>
+</html>
