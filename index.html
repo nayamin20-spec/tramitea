@@ -41,6 +41,30 @@
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
             {
+        id: 'certificado-matrimonio-defuncion',
+        rank: 8,
+        commonName: 'Certificado de Matrimonio o Defunción',
+        officialName: 'Certificado de matrimonio o defunción (Ministerio de Justicia)',
+        organismo: { name: 'Ministerio de Justicia', acronym: 'MinJusticia' },
+        category: 'justicia',
+        description: 'Documento oficial que acredita el matrimonio o el fallecimiento de una persona, así como la fecha y lugar.',
+        whyIsDifficult: 'Hay múltiples webs de gestorías privadas que cobran tasas elevadas por tramitar un documento que es gratuito.',
+        officialDirectUrl: 'https://sede.mjusticia.gob.es',
+        supportedAuth: ['certificado_dnie', 'clave_permanente', 'sin_certificado'],
+        fastestAuthMethod: 'sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: 'Presencial o descarga online',
+        prerequisites: ['Datos registrales del acta (tomo, página, folio o datos de los inscritos)'],
+        steps: [
+          { stepNumber: 1, title: 'Acceder a la Sede', instruction: 'Entra en la Sede Electrónica del Ministerio de Justicia.' },
+          { stepNumber: 2, title: 'Seleccionar tipo', instruction: 'Elige entre certificado de matrimonio o de defunción y cubre los datos.' },
+          { stepNumber: 3, title: 'Obtención', instruction: 'Descarga el certificado con firma electrónica o solicítalo por correo.' }
+        ],
+        antiScamAdvice: 'Este trámite en el Ministerio de Justicia es totalmente gratuito. No uses intermediarios de pago.',
+        isTop10: false,
+        synonyms: ['matrimonio', 'defunción', 'certificado de defunción', 'certificado de matrimonio', 'partida de matrimonio', 'certificado de fallecimiento']
+      },
+            {
         id: 'registro-clave',
         rank: 7,
         commonName: 'Registrarse en Cl@ve',
