@@ -41,6 +41,30 @@
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
             {
+        id: 'autorizacion-regreso',
+        rank: 11,
+        commonName: 'Autorización de Regreso a España',
+        officialName: 'Autorización de regreso para residentes',
+        organismo: { name: 'Ministerio de Política Territorial / Policía Nacional', acronym: 'Extranjería' },
+        category: 'extranjeria',
+        description: 'Permiso temporal para salir de España y volver a entrar mientras tu tarjeta de residencia o prórroga está en trámite de renovación.',
+        whyIsDifficult: 'Se debe solicitar con antelación justificada a un viaje inminente y requiere cita previa en la Oficina de Extranjería o Comisaría.',
+        officialDirectUrl: 'https://sede.administracionespublicas.gob.es',
+        supportedAuth: ['certificado_dnie', 'clave'],
+        fastestAuthMethod: 'certificado_dnie',
+        cost: 'Tasa oficial modelo 790 (código 052)',
+        estimatedTime: 'Expedición presencial rápida',
+        prerequisites: ['Tener la tarjeta de residencia caducada y la solicitud de renovación presentada en plazo'],
+        steps: [
+          { stepNumber: 1, title: 'Solicitar Cita', instruction: 'Pide cita previa para "Autorización de Regreso" en la Sede de Administraciones Públicas.' },
+          { stepNumber: 2, title: 'Preparar documentos', instruction: 'Lleva pasaporte, solicitud de renovación anterior y billetes de viaje que justifiquen el desplazamiento.' },
+          { stepNumber: 3, title: 'Obtención', instruction: 'Acude a la oficina asignada para que te expidan el documento de viaje.' }
+        ],
+        antiScamAdvice: 'No viajes fuera de España con la tarjeta caducada sin este permiso si tu renovación sigue pendiente.',
+        isTop10: false,
+        synonyms: ['autorizacion regreso', 'viajar con residencia caducada', 'permiso salida y entrada españa']
+      },
+            {
         id: 'certificado-matrimonio-defuncion',
         rank: 8,
         commonName: 'Certificado de Matrimonio o Defunción',
