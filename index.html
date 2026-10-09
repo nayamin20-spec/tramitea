@@ -40,26 +40,6 @@
 
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
-        {
-    id: 'cancelacion-antecedentes',
-    rank: 4,
-    commonName: 'Cancelación de Antecedentes Penales',
-    officialName: 'Cancelación de antecedentes penales',
-    organismo: { name: 'Ministerio de Justicia' },
-    category: 'justicia',
-    description: 'Solicitud para cancelar antecedentes penales una vez cumplidas las penas y transcurridos los plazos legales.',
-    whyIsDifficult: 'Requiere cumplir plazos de carencia específicos según la condena y presentar la documentación exacta.',
-    officialDirectUrl: 'https://www.mjusticia.gob.es',
-    supportedAuth: ['certificado_digital', 'clave'],
-    steps: [
-      { stepNumber: 1, title: 'Comprobar requisitos', description: 'Haber extinguido la responsabilidad penal y transcurrido el plazo de carencia sin delinquir.' },
-      { stepNumber: 2, title: 'Reunir documentación', description: 'Obtener certificado de antecedentes penales y testimonio de la sentencia firme.' },
-      { stepNumber: 3, title: 'Presentar solicitud', description: 'Realizar el trámite online o presencialmente.' }
-    ],
-    antiScamAdvice: 'Utiliza siempre la sede electrónica oficial del Ministerio de Justicia.',
-    isTop10: true,
-    synonyms: ['antecedentes penales', 'cancelar antecedentes', 'borrar antecedentes'],
-  },
       {
         id: 'vida-laboral',
         rank: 1,
