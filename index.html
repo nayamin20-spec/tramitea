@@ -41,6 +41,30 @@
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
             {
+        id: 'certificado-nacimiento',
+        rank: 5,
+        commonName: 'Certificado de Nacimiento',
+        officialName: 'Certificado de nacimiento (Ministerio de Justicia)',
+        organismo: { name: 'Ministerio de Justicia', acronym: 'MinJusticia' },
+        category: 'justicia',
+        description: 'Documento oficial que acredita el hecho del nacimiento, fecha, hora y sexo.',
+        whyIsDifficult: 'Existen páginas intermediarias que cobran por solicitar un documento que es gratuito en la sede oficial.',
+        officialDirectUrl: 'https://sede.mjusticia.gob.es',
+        supportedAuth: ['certificado_dnie', 'clave_permanente', 'sin_certificado'],
+        fastestAuthMethod: 'sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: 'Presencial o descarga online',
+        prerequisites: ['Datos registrales (tomo, página, folio o datos personales)'],
+        steps: [
+          { stepNumber: 1, title: 'Acceder a la Sede', instruction: 'Entra en el apartado de certificados del Ministerio de Justicia.' },
+          { stepNumber: 2, title: 'Rellenar datos', instruction: 'Indica los datos del inscrito o identifícate digitalmente.' },
+          { stepNumber: 3, title: 'Obtención', instruction: 'Descarga el certificado electrónico o recíbelo por correo postal.' }
+        ],
+        antiScamAdvice: 'El certificado oficial de nacimiento expedido por el Ministerio es gratuito.',
+        isTop10: true,
+        synonyms: ['nacimiento', 'partida de nacimiento', 'certificado literal']
+      },
+            {
         id: 'cancelacion-antecedentes',
         rank: 4,
         commonName: 'Cancelación de Antecedentes Penales',
