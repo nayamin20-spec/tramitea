@@ -41,6 +41,30 @@
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
             {
+        id: 'registro-clave',
+        rank: 7,
+        commonName: 'Registrarse en Cl@ve',
+        officialName: 'Obtención de credenciales del sistema Cl@ve',
+        organismo: { name: 'Agencia Tributaria y Ministerio de Hacienda', acronym: 'AEAT / Cl@ve' },
+        category: 'digital',
+        description: 'Sistema de identificación electrónica para relacionarse con las Administraciones Públicas españolas.',
+        whyIsDifficult: 'Existen varios niveles de registro y requiere verificar el número de teléfono móvil.',
+        officialDirectUrl: 'https://clave.gob.es',
+        supportedAuth: ['videollamada', 'presencial', 'certificado_dnie'],
+        fastestAuthMethod: 'videollamada',
+        cost: '100% Gratuito',
+        estimatedTime: '10 minutos',
+        prerequisites: ['DNI o NIE y un teléfono móvil a tu nombre'],
+        steps: [
+          { stepNumber: 1, title: 'Acceso al registro', instruction: 'Entra en la web oficial de Cl@ve.' },
+          { stepNumber: 2, title: 'Elegir método', instruction: 'Selecciona registro por videollamada o con certificado digital.' },
+          { stepNumber: 3, title: 'Validación', instruction: 'Completa los datos y obtén tu activación permanente.' }
+        ],
+        antiScamAdvice: 'Cl@ve es un sistema público y gratuito del Estado español.',
+        isTop10: true,
+        synonyms: ['clave pin', 'clave permanente', 'registro clave', 'identidad digital']
+      },
+            {
         id: 'tarjeta-sanitaria-europea',
         rank: 6,
         commonName: 'Tarjeta Sanitaria Europea (TSE)',
