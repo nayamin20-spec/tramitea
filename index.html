@@ -41,6 +41,30 @@
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
             {
+        id: 'tarjeta-sanitaria-europea',
+        rank: 6,
+        commonName: 'Tarjeta Sanitaria Europea (TSE)',
+        officialName: 'Solicitud y renovación de la Tarjeta Sanitaria Europea',
+        organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
+        category: 'salud',
+        description: 'Documento personal e intransferible que acredita el derecho a recibir asistencia sanitaria durante tu estancia temporal en la UE.',
+        whyIsDifficult: 'Muchos usuarios recurren a webs de pago creyendo que la tarjeta tiene tasas de emisión.',
+        officialDirectUrl: 'https://sede.seg-social.gob.es',
+        supportedAuth: ['sms_sin_certificado', 'certificado_dnie', 'clave'],
+        fastestAuthMethod: 'sms_sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: '5 días (envío postal)',
+        prerequisites: ['Estar afiliado y en alta o en situación asimilada en la Seguridad Social'],
+        steps: [
+          { stepNumber: 1, title: 'Acceder a la Sede de la Seguridad Social', instruction: 'Entra en el servicio online de solicitud de la TSE.' },
+          { stepNumber: 2, title: 'Identificación', instruction: 'Identifícate mediante SMS, Cl@ve o Certificado Digital.' },
+          { stepNumber: 3, title: 'Dirección de envío', instruction: 'Confirma tu domicilio para recibir la tarjeta física en casa.' }
+        ],
+        antiScamAdvice: 'La Tarjeta Sanitaria Europea es gratuita. No pagues a intermediarios.',
+        isTop10: true,
+        synonyms: ['tarjeta sanitaria', 'sanitaria europea', 'viajar europa', 'tse']
+      },
+            {
         id: 'certificado-nacimiento',
         rank: 5,
         commonName: 'Certificado de Nacimiento',
