@@ -48,15 +48,15 @@
         organismo: { name: 'Tesorería General de la Seguridad Social', acronym: 'TGSS' },
         category: 'trabajo',
         description: 'Documento oficial que acredita que no existen deudas pendientes con la Seguridad Social. Imprescindible para licitaciones, becas y contratación.',
-        whyIsDifficult: 'Es muy solicitado pero a menudo se confunde con el certificado negativo de deudas o la vida laboral.',
-        officialDirectUrl: 'https://portal.seg-social.gob.es/wps/portal/importass/importass/Categorias/Informes+y+certificados/Informe+de+estar+al+corriente',
+        whyIsDifficult: 'Es muy solicitado pero las URLs de Import@ss cambian según la sección específica.',
+        officialDirectUrl: 'https://portal.seg-social.gob.es/wps/portal/importass/importass/Categorias/Consulta+de+pagos+y+deudas',
         supportedAuth: ['clave_permanente', 'certificado_dnie', 'sms_sin_certificado'],
         fastestAuthMethod: 'sms_sin_certificado',
         cost: '100% Gratuito',
         estimatedTime: 'Inmediato (descarga en PDF)',
         prerequisites: ['Número de Afiliación a la Seguridad Social (NAF) o DNI/NIE registrado'],
         steps: [
-          { stepNumber: 1, title: 'Acceder a Import@ss', instruction: 'Entra en el portal Import@ss de la Tesorería General de la Seguridad Social.' },
+          { stepNumber: 1, title: 'Acceder a Import@ss', instruction: 'Entra en el apartado Consulta de pagos y deudas del portal Import@ss.' },
           { stepNumber: 2, title: 'Identificación rápida', instruction: 'Accede con Cl@ve, Certificado o vía SMS recibiendo un código en tu teléfono móvil.' },
           { stepNumber: 3, title: 'Descarga del informe', instruction: 'Genera el informe oficial en PDF firmado electrónicamente.' }
         ],
