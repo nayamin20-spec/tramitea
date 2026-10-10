@@ -41,6 +41,30 @@
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
             {
+        id: 'tramites-dgt',
+        rank: 1,
+        commonName: 'Trámites DGT',
+        officialName: 'Sede Electrónica de la Dirección General de Tráfico',
+        organismo: { name: 'Trámites DGT', acronym: 'DGT' },
+        category: 'movilidad',
+        description: 'Acceso a la Sede Electrónica de la DGT para la consulta de puntos, pago de multas, cambio de titularidad de vehículos e informes.',
+        whyIsDifficult: 'Las URLs específicas de la DGT cambian frecuentemente provocando errores 404, por lo que es mejor acceder directamente al portal general.',
+        officialDirectUrl: 'https://sede.dgt.gob.es/',
+        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
+        fastestAuthMethod: 'clave_permanente',
+        cost: '100% Gratuito (salvo pago de tasas específicas)',
+        estimatedTime: 'Inmediato',
+        prerequisites: ['Permiso de conducir o documentación del vehículo'],
+        steps: [
+          { stepNumber: 1, title: 'Acceder a la Sede DGT', instruction: 'Entra a la Sede Electrónica oficial de la Dirección General de Tráfico.' },
+          { stepNumber: 2, title: 'Seleccionar el trámite', instruction: 'Elige entre Puntos, Multas, Vehículos o Permisos de Conducir.' },
+          { stepNumber: 3, title: 'Identificación', instruction: 'Accede con Cl@ve, DNIe o certificado digital para completar la gestión.' }
+        ],
+        antiScamAdvice: 'Accede siempre desde el portal oficial de la DGT. No pagues por gestiones que son gratuitas.',
+        isTop10: true,
+        synonyms: ['dgt', 'puntos', 'multas', 'trafico', 'transferencia vehiculo', 'carnet conducir']
+      },
+            {
         id: 'autorizacion-regreso',
         rank: 11,
         commonName: 'Autorización de Regreso a España',
@@ -281,30 +305,6 @@
         synonyms: ['paro', 'pedir el paro', 'cobrar el paro', 'desempleo', 'sepe', 'inem', 'cita inem', 'subsidio', 'despido']
       },
       {
-        id: 'transferencia-vehiculo-dgt',
-        rank: 11,
-        commonName: 'Cambio de titularidad / Transferencia de vehículos',
-        officialName: 'Cambio de titularidad y transmisiones de vehículos (Compraventa)',
-        organismo: { name: 'Dirección General de Tráfico', acronym: 'DGT' },
-        category: 'trafico',
-        description: 'Trámite obligatorio para cambiar el titular de un coche, moto o furgoneta tras una compraventa o herencia.',
-        whyIsDifficult: 'Gestorías online cobran hasta 150€ de sobrecoste. Exige abonar previamente el ITP autonómico.',
-        officialDirectUrl: 'https://sede.dgt.gob.es/es/vehiculos/transferencias-de-vehiculos/',
-        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie'],
-        fastestAuthMethod: 'clave_pin',
-        cost: 'Tasa DGT 4.1: 55,70 € + ITP autonómico',
-        estimatedTime: '10 minutos online en DGT',
-        prerequisites: ['Contrato de compraventa firmado, DNI de ambas partes y justificante de pago del ITP (modelo 620/621)'],
-        steps: [
-          { stepNumber: 1, title: 'Liquidar ITP autonómico', instruction: 'Paga el impuesto de transmisiones patrimoniales en la web tributaria de tu CCAA para obtener el código CET.' },
-          { stepNumber: 2, title: 'Pagar tasa 4.1 en la DGT', instruction: 'Abona la tasa de 55,70€ en la pasarela de la DGT.' },
-          { stepNumber: 3, title: 'Presentar solicitud en sede', instruction: 'Introduce los datos con Cl@ve y descarga tu nuevo Permiso de Circulación provisional.' }
-        ],
-        antiScamAdvice: 'La tasa oficial son 55,70€ en sede.dgt.gob.es. Evita intermediarios de cobro abusivo.',
-        isTop10: false,
-        synonyms: ['coche', 'moto', 'vehiculo', 'vehículo', 'transferencia', 'cambio de nombre', 'cambiar de nombre un coche', 'vender coche', 'comprar coche', 'traspaso', 'segunda mano', 'itp']
-      },
-      {
         id: 'certificado-digital-fnmt',
         rank: 5,
         commonName: 'Sacar el Certificado Digital (FNMT)',
@@ -423,29 +423,6 @@
         antiScamAdvice: 'Desconfía de webs que cobran 40€ alegando enviar tu padrón por correo.',
         isTop10: true,
         synonyms: ['padron', 'padrón', 'empadronamiento', 'pedir el padron', 'volante de empadronamiento', 'cambio de domicilio', 'ayuntamiento']
-      },
-      {
-        id: 'puntos-carnet-dgt',
-        rank: 12,
-        commonName: 'Consultar Puntos del Carnet de Conducir',
-        officialName: 'Consulta de saldo de puntos y antecedentes del permiso de conducción',
-        organismo: { name: 'Dirección General de Tráfico', acronym: 'DGT' },
-        category: 'trafico',
-        description: 'Permite consultar el saldo exacto de puntos que tienes en tu carné de conducir y el historial de sanciones.',
-        whyIsDifficult: 'Abundan aplicaciones móviles no oficiales que capturan datos de conductores con fines publicitarios.',
-        officialDirectUrl: 'https://sede.dgt.gob.es/es/permisos-de-conducir/consulta-puntos/',
-        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie'],
-        fastestAuthMethod: 'clave_pin',
-        cost: '100% Gratuito',
-        estimatedTime: '1 minuto',
-        prerequisites: ['Permiso de conducir español en vigor y Cl@ve'],
-        steps: [
-          { stepNumber: 1, title: 'Entrar con Cl@ve', instruction: 'Accede al servicio telemático de la DGT.' },
-          { stepNumber: 2, title: 'Saldo en pantalla', instruction: 'Tu saldo aparecerá de inmediato con el desglose de puntos.' }
-        ],
-        antiScamAdvice: 'La DGT nunca notifica multas ni puntos mediante enlaces por SMS.',
-        isTop10: false,
-        synonyms: ['puntos', 'puntos carnet', 'puntos dgt', 'consultar puntos', 'multa puntos', 'saldo de puntos']
       },
       {
         id: 'cita-medica-ccaa',
