@@ -474,29 +474,6 @@
       }
     ];
 
-    const CCAA_LIST = [
-      { id: 'todas', name: 'Toda España' },
-      { id: 'andalucia', name: 'Andalucía' },
-      { id: 'aragon', name: 'Aragón' },
-      { id: 'asturias', name: 'Asturias' },
-      { id: 'baleares', name: 'Illes Balears' },
-      { id: 'canarias', name: 'Canarias' },
-      { id: 'cantabria', name: 'Cantabria' },
-      { id: 'castilla-la-mancha', name: 'Castilla-La Mancha' },
-      { id: 'castilla-y-leon', name: 'Castilla y León' },
-      { id: 'catalunya', name: 'Catalunya' },
-      { id: 'ceuta', name: 'Ceuta' },
-      { id: 'valencia', name: 'Comunitat Valenciana' },
-      { id: 'extremadura', name: 'Extremadura' },
-      { id: 'galicia', name: 'Galicia' },
-      { id: 'madrid', name: 'Comunidad de Madrid' },
-      { id: 'melilla', name: 'Melilla' },
-      { id: 'murcia', name: 'Región de Murcia' },
-      { id: 'navarra', name: 'Navarra' },
-      { id: 'pais-vasco', name: 'País Vasco' },
-      { id: 'la-rioja', name: 'La Rioja' }
-    ];
-
     const AUTH_LABELS = {
       sms_sin_certificado: '📱 Vía SMS / Sin certificado',
       clave_pin: '🔑 Cl@ve PIN',
@@ -707,20 +684,6 @@
                     >
                       <span>💻 Con Certificado</span>
                     </button>
-
-                    {/* SELECTOR CCAA */}
-                    <div className="relative inline-flex items-center">
-                      <select
-                        value={selectedCcaa}
-                        onChange={(e) => setSelectedCcaa(e.target.value)}
-                        className="pl-3 pr-7 py-1.5 bg-white border border-slate-200 hover:border-blue-300 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600 cursor-pointer appearance-none"
-                      >
-                        {CCAA_LIST.map((c) => (
-                          <option key={c.id} value={c.id}>{c.name}</option>
-                        ))}
-                      </select>
-                      <span className="absolute right-2 text-slate-400 pointer-events-none text-[10px]">▼</span>
-                    </div>
                   </div>
                 </div>
               </div>
