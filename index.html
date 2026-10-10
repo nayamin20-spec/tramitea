@@ -41,6 +41,54 @@
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
             {
+        id: 'prestacion-nacimiento-cuidado-menor',
+        rank: 9,
+        commonName: 'Baja por Maternidad / Paternidad',
+        officialName: 'Prestación por nacimiento y cuidado de menor',
+        organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
+        category: 'familia',
+        description: 'Solicitud del subsidio por maternidad o paternidad tras el nacimiento o adopción de un hijo.',
+        whyIsDifficult: 'Requiere haber registrado el informe de maternidad/paternidad de la empresa previamente.',
+        officialDirectUrl: 'https://maternidad-paternidad.seg-social.gob.es/',
+        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
+        fastestAuthMethod: 'clave_permanente',
+        cost: '100% Gratuito',
+        estimatedTime: '10 minutos (resolución en pocos días)',
+        prerequisites: ['Registro del nacimiento', 'Informe de la empresa si eres trabajador por cuenta ajena'],
+        steps: [
+          { stepNumber: 1, title: 'Acceso a Tu Seguridad Social', instruction: 'Entra en la plataforma del INSS con Cl@ve o Certificado.' },
+          { stepNumber: 2, title: 'Simulación y Solicitud', instruction: 'Selecciona la fecha de inicio del descanso y adjunta el certificado del hospital.' },
+          { stepNumber: 3, title: 'Confirmación', instruction: 'Revisa los datos del pago y descarga el justificante.' }
+        ],
+        antiScamAdvice: 'La solicitud en la Sede Oficial del INSS es totalmente gratuita.',
+        isTop10: true,
+        synonyms: ['maternidad', 'paternidad', 'baja bebe', 'nacimiento', 'inss', 'prestacion nacimiento']
+      },
+      {
+        id: 'deduccion-maternidad-modelo-140',
+        rank: 10,
+        commonName: 'Pago Anticipado Deducción Maternidad (100€/mes)',
+        officialName: 'Abono anticipado de la deducción por maternidad - Modelo 140',
+        organismo: { name: 'Agencia Tributaria', acronym: 'AEAT' },
+        category: 'impuestos',
+        description: 'Solicitud del cobro mensual de 100 € por cada hijo menor de 3 años para madres trabajadoras o perceptoras de prestaciones.',
+        whyIsDifficult: 'El modelo requiere el DNI/NIE de los progenitores y datos del libro de familia/registro civil.',
+        officialDirectUrl: 'https://sede.agenciatributaria.gob.es/Sede/procedimientoini/GZ01.shtml',
+        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
+        fastestAuthMethod: 'clave_pin',
+        cost: '100% Gratuito',
+        estimatedTime: '5 minutos',
+        prerequisites: ['Hijo menor de 3 años', 'Estar dada de alta en la Seguridad Social o percibir prestación/subsidio'],
+        steps: [
+          { stepNumber: 1, title: 'Acceso al Modelo 140', instruction: 'Ingresa en la Sede de la AEAT en el trámite del Modelo 140.' },
+          { stepNumber: 2, title: 'Datos del menor', instruction: 'Indica los datos del recién nacido y la cuenta bancaria para el abono.' },
+          { stepNumber: 3, title: 'Envío', instruction: 'Firma y presenta la solicitud online.' }
+        ],
+        antiScamAdvice: 'Hacienda realiza la transferencia directa a tu IBAN sin comisiones intermedias.',
+        isTop10: false,
+        synonyms: ['100 euros bebe', 'modelo 140', 'deduccion maternidad', 'ayuda madre', 'hacienda bebe']
+      }
+            {
         id: 'certificado-estar-al-corriente-seguridad-social',
         rank: 17,
         commonName: 'Certificado de Estar al Corriente con la Seguridad Social',
