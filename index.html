@@ -40,6 +40,101 @@
 
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
+  {
+    id: 'informe-vida-laboral',
+    rank: 1,
+    commonName: 'Informe de Vida Laboral',
+    officialName: 'Informe de situación en el alta en el Sistema de la Seguridad Social',
+    organismo: { name: 'Tesorería General de la Seguridad Social', acronym: 'TGSS' },
+    category: 'empleo',
+    description: 'Obtén de forma inmediata tu certificado con todos los periodos de alta y baja en la Seguridad Social.',
+    whyIsDifficult: 'Requiere validación de identidad digital rápida (SMS o Cl@ve).',
+    officialDirectUrl: 'https://importass.seg-social.gob.es/trabajadores/vidalaboral',
+    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin', 'sms_sin_certificado'],
+    fastestAuthMethod: 'sms_sin_certificado',
+    cost: '100% Gratuito',
+    estimatedTime: '1-2 minutos',
+    prerequisites: ['Número de Seguridad Social (NASS)', 'Teléfono móvil asociado para recibir el código SMS'],
+    steps: [
+      { stepNumber: 1, title: 'Acceso a Import@ss', instruction: 'Entra en el portal oficial de la Seguridad Social.' },
+      { stepNumber: 2, title: 'Identificación por SMS', instruction: 'Introduce tu DNI/NIE, fecha de nacimiento y el código recibido en el móvil.' },
+      { stepNumber: 3, title: 'Descarga', instruction: 'Genera y descarga el informe oficial en formato PDF al instante.' }
+    ],
+    antiScamAdvice: 'La Seguridad Social nunca te pedirá tarjeta de crédito ni pago alguno por este informe.',
+    isTop10: true,
+    synonyms: ['vida laboral', 'seguridad social', 'informe alta', 'tgss', 'importass', 'trabajar']
+  },
+  {
+    id: 'tarjeta-sanitaria-europea',
+    rank: 2,
+    commonName: 'Tarjeta Sanitaria Europea (TSE)',
+    officialName: 'Solicitud o renovación de la Tarjeta Sanitaria Europea',
+    organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
+    category: 'salud',
+    description: 'Documento personal e intransferible que acredita el derecho a recibir las prestaciones sanitarias necesarias durante una estancia temporal en la UE.',
+    whyIsDifficult: 'No todos los colectivos pueden solicitarla online si no están en activo o dados de alta en el régimen correspondiente.',
+    officialDirectUrl: 'https://misede.seg-social.gob.es/wps/portal/misede/inicio/solicitudtse',
+    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin', 'sin_certificado_datos_personales'],
+    fastestAuthMethod: 'sin_certificado_datos_personales',
+    cost: '100% Gratuito',
+    estimatedTime: '5 minutos (envío por correo postal en ~10 días)',
+    prerequisites: ['Estar afiliado y en situación de alta o asimilada en la Seguridad Social'],
+    steps: [
+      { stepNumber: 1, title: 'Acceso a la Sede', instruction: 'Entra en el servicio de solicitud de la TSE de la Seguridad Social.' },
+      { stepNumber: 2, title: 'Datos de desplazamiento', instruction: 'Rellena tus datos personales y la dirección postal donde deseas recibir la tarjeta.' },
+      { stepNumber: 3, title: 'Recibo', instruction: 'Conserva el resguardo digital mientras te llega la tarjeta física a casa.' }
+    ],
+    antiScamAdvice: 'La tramitación y envío de la TSE por canales oficiales es totalmente gratuita. Desconfía de páginas web de pago.',
+    isTop10: true,
+    synonyms: ['tse', 'tarjeta sanitaria', 'viajar europa', 'sanidad extranjero', 'seguridad social']
+  },
+  {
+    id: 'certificado-delitos-sexuales',
+    rank: 3,
+    commonName: 'Certificado de Delitos de Naturaleza Sexual',
+    officialName: 'Certificado del Registro Central de Delincuentes Sexuales',
+    organismo: { name: 'Ministerio de Justicia', acronym: 'MJU' },
+    category: 'otros',
+    description: 'Certificado obligatorio para cualquier profesión, oficio o actividad que implique contacto habitual con menores.',
+    whyIsDifficult: 'Exige certificado digital o Cl@ve obligatoriamente para la descarga inmediata.',
+    officialDirectUrl: 'https://sede.mjusticia.gob.es/es/tramites/certificado-registro-central',
+    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
+    fastestAuthMethod: 'certificado_dnie',
+    cost: '100% Gratuito',
+    estimatedTime: '2-3 minutos',
+    prerequisites: ['Certificado digital, DNI electrónico o credenciales Cl@ve activas'],
+    steps: [
+      { stepNumber: 1, title: 'Acceso a Sede de Justicia', instruction: 'Entra en el trámite de delincuentes sexuales del Ministerio de Justicia.' },
+      { stepNumber: 2, title: 'Solicitud online', instruction: 'Identifícate con tu certificado o Cl@ve y confirma la finalidad.' },
+      { stepNumber: 3, title: 'Descarga del PDF', instruction: 'Obtén el certificado firmado electrónicamente al momento.' }
+    ],
+    antiScamAdvice: 'Cualquier empresa que te lo exija para trabajar con menores debe aceptarlo gratis.',
+    isTop10: true,
+    synonyms: ['delitos sexuales', 'antecedentes penales', 'menores', 'ministerio justicia', 'certificado sexual']
+  },
+  {
+    id: 'volante-empadronamiento',
+    rank: 4,
+    commonName: 'Certificado / Volante de Empadronamiento',
+    officialName: 'Consulta y gestión de la inscripción padronal municipal',
+    organismo: { name: 'Ayuntamientos / Administración General', acronym: 'AGE' },
+    description: 'Acredita tu residencia y domicilio habitual en tu municipio para múltiples trámites oficiales.',
+    whyIsDifficult: 'Es un trámite local: cada ayuntamiento tiene su propia Sede, aunque puedes consultarlo globalmente a través de la carpeta ciudadana.',
+    officialDirectUrl: 'https://micasa.administracion.gob.es/',
+    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
+    fastestAuthMethod: 'clave_permanente',
+    cost: '100% Gratuito',
+    estimatedTime: '3-5 minutos',
+    prerequisites: ['Estar empadronado en el municipio correspondiente'],
+    steps: [
+      { stepNumber: 1, title: 'Acceso unificado o local', instruction: 'Entra en Mi Carpeta Ciudadana o en la Sede Electrónica de tu Ayuntamiento.' },
+      { stepNumber: 2, title: 'Selección de documento', instruction: 'Solicita el volante o certificado de empadronamiento actual.' },
+      { stepNumber: 3, title: 'Descarga', instruction: 'Obtén el documento con CSV (Código Seguro de Verificación).' }
+    ],
+    antiScamAdvice: 'El padrón municipal no tiene coste en la inmensa mayoría de los ayuntamientos.',
+    isTop10: true,
+    synonyms: ['empadronamiento', 'padron', 'volante', 'certificado residencia', 'ayuntamiento']
+  },
                   {
         id: 'prestacion-nacimiento-cuidado-menor',
         rank: 9,
@@ -207,31 +302,7 @@
         antiScamAdvice: 'Cl@ve es un sistema público y gratuito del Estado español.',
         isTop10: true,
         synonyms: ['clave pin', 'clave permanente', 'registro clave', 'identidad digital']
-      },
-            {
-        id: 'tarjeta-sanitaria-europea',
-        rank: 6,
-        commonName: 'Tarjeta Sanitaria Europea (TSE)',
-        officialName: 'Solicitud y renovación de la Tarjeta Sanitaria Europea',
-        organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
-        category: 'salud',
-        description: 'Documento personal e intransferible que acredita el derecho a recibir asistencia sanitaria durante tu estancia temporal en la UE.',
-        whyIsDifficult: 'Muchos usuarios recurren a webs de pago creyendo que la tarjeta tiene tasas de emisión.',
-        officialDirectUrl: 'https://sede.seg-social.gob.es',
-        supportedAuth: ['sms_sin_certificado', 'certificado_dnie', 'clave'],
-        fastestAuthMethod: 'sms_sin_certificado',
-        cost: '100% Gratuito',
-        estimatedTime: '5 días (envío postal)',
-        prerequisites: ['Estar afiliado y en alta o en situación asimilada en la Seguridad Social'],
-        steps: [
-          { stepNumber: 1, title: 'Acceder a la Sede de la Seguridad Social', instruction: 'Entra en el servicio online de solicitud de la TSE.' },
-          { stepNumber: 2, title: 'Identificación', instruction: 'Identifícate mediante SMS, Cl@ve o Certificado Digital.' },
-          { stepNumber: 3, title: 'Dirección de envío', instruction: 'Confirma tu domicilio para recibir la tarjeta física en casa.' }
-        ],
-        antiScamAdvice: 'La Tarjeta Sanitaria Europea es gratuita. No pagues a intermediarios.',
-        isTop10: true,
-        synonyms: ['tarjeta sanitaria', 'sanitaria europea', 'viajar europa', 'tse']
-      },
+        },
             {
         id: 'certificado-nacimiento',
         rank: 5,
@@ -280,30 +351,6 @@
         isTop10: true,
         synonyms: ['antecedentes penales', 'cancelar antecedentes', 'borrar antecedentes', 'ministerio de justicia']
       },    
-      {
-        id: 'vida-laboral',
-        rank: 1,
-        commonName: 'Pedir la vida laboral',
-        officialName: 'Informe de vida laboral e informe de bases de cotización',
-        organismo: { name: 'Tesorería General de la Seguridad Social', acronym: 'TGSS / Import@ss' },
-        category: 'laboral',
-        description: 'Acredita todos los días y periodos que has cotizado a la Seguridad Social a lo largo de tu vida laboral.',
-        whyIsDifficult: 'Los buscadores suelen posicionar webs de gestorías fraudulentas que cobran entre 15€ y 30€ por un trámite gratuito.',
-        officialDirectUrl: 'https://portal.seg-social.gob.es/wps/portal/importass/importass/Categorias/Vida+laboral+e+informes/Informes+sobre+tu+situacion+laboral/Informe+de+vida+laboral',
-        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie', 'sms_sin_certificado'],
-        fastestAuthMethod: 'sms_sin_certificado',
-        cost: '100% Gratuito',
-        estimatedTime: '2 minutos (descarga PDF)',
-        prerequisites: ['Tener el móvil registrado en la Seguridad Social (para SMS) o disponer de Cl@ve/Certificado'],
-        steps: [
-          { stepNumber: 1, title: 'Acceder a Import@ss', instruction: 'Entra en el portal oficial directo de la TGSS.' },
-          { stepNumber: 2, title: 'Elegir Vía SMS', instruction: 'Si no tienes Cl@ve, introduce DNI, fecha de nacimiento y tu número de teléfono.' },
-          { stepNumber: 3, title: 'Descarga inmediata', instruction: 'Introduce el código SMS de 6 dígitos y descarga tu informe oficial en PDF.' }
-        ],
-        antiScamAdvice: 'El trámite es 100% oficial y gratuito. Jamás pagues en webs privadas.',
-        isTop10: true,
-        synonyms: ['vida laboral', 'pedir vida laboral', 'dias cotizados', 'años cotizados', 'bases de cotizacion', 'curriculum', 'seguridad social', 'importass']
-      },
       {
         id: 'cita-dni-pasaporte',
         rank: 2,
@@ -449,53 +496,8 @@
         synonyms: ['renta', 'hacer la renta', 'declaracion de la renta', 'irpf', 'hacienda', 'aeat', 'casilla 505', 'borrador']
       },
       {
-        id: 'certificado-delitos-sexuales',
-        rank: 8,
-        commonName: 'Certificado de Delitos de Naturaleza Sexual',
-        officialName: 'Certificado de Delitos de Naturaleza Sexual y Trata de Seres Humanos',
-        organismo: { name: 'Ministerio de Justicia', acronym: 'Justicia' },
-        category: 'certificados',
-        description: 'Obligatorio por ley para cualquier persona que trabaje o ejerza voluntariado en contacto con menores de edad.',
-        whyIsDifficult: 'Se confunde con el Certificado de Antecedentes Penales ordinario (que sí cobra tasa, mientras este es gratuito).',
-        officialDirectUrl: 'https://sede.mjusticia.gob.es/es/tramites/certificado-delitos-naturaleza-sexual',
-        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie'],
-        fastestAuthMethod: 'clave_pin',
-        cost: '100% Gratuito (sin tasa)',
-        estimatedTime: '2 minutos (descarga inmediata)',
-        prerequisites: ['Cl@ve PIN o Certificado Digital'],
-        steps: [
-          { stepNumber: 1, title: 'Entrar al trámite', instruction: 'Accede a la sede electrónica de Justicia en el apartado exacto.' },
-          { stepNumber: 2, title: 'Identificación Cl@ve', instruction: 'Pulsa en tramitación telemática e identifícate en un clic.' },
-          { stepNumber: 3, title: 'Descarga PDF', instruction: 'El sistema valida con el Registro Central y emite el PDF oficial.' }
-        ],
-        antiScamAdvice: 'Este certificado no tiene tasa. No pagues en webs intermediarias.',
-        isTop10: true,
-        synonyms: ['delitos sexuales', 'trabajar con niños', 'menores', 'profesor', 'monitor de campamento', 'colegio']
-      },
-      {
         id: 'certificado-padron-municipal',
-        rank: 9,
-        commonName: 'Pedir el Certificado o Volante de Empadronamiento',
-        officialName: 'Emisión de volante y certificado de empadronamiento municipal',
-        organismo: { name: 'Ayuntamientos Municipales', acronym: 'Ayuntamiento' },
-        category: 'identidad',
-        description: 'Acredita tu residencia habitual en un municipio. Exigido para médicos, colegios o renovar el DNI.',
-        whyIsDifficult: 'Cada uno de los 8.100 municipios de España tiene su propia sede con nombres y requisitos variables.',
-        officialDirectUrl: 'https://sede.madrid.es/portal/site/tramites/template.PAGE/menuitem.a13d4b6f64a50d24e964e964ccd08a0c/?vgnextoid=5f7e6f8516035210VgnVCM2000000c205a0aRCRD',
-        supportedAuth: ['clave_pin', 'certificado_dnie', 'presencial_cita'],
-        fastestAuthMethod: 'certificado_dnie',
-        cost: '100% Gratuito',
-        estimatedTime: 'Instantáneo telemático',
-        prerequisites: ['Cl@ve o Certificado y estar censado en el municipio'],
-        steps: [
-          { stepNumber: 1, title: 'Elegir Volante', instruction: 'El volante suele bastar para casi todo (médico, colegio, carné).' },
-          { stepNumber: 2, title: 'Acceder a tu sede', instruction: 'Entra en la sede electrónica municipal con certificado.' },
-          { stepNumber: 3, title: 'Descarga con CSV', instruction: 'Obtén el documento con Código Seguro de Verificación.' }
-        ],
-        antiScamAdvice: 'Desconfía de webs que cobran 40€ alegando enviar tu padrón por correo.',
-        isTop10: true,
-        synonyms: ['padron', 'padrón', 'empadronamiento', 'pedir el padron', 'volante de empadronamiento', 'cambio de domicilio', 'ayuntamiento']
-      },
+            },
       {
         id: 'cita-medica-ccaa',
         rank: 13,
