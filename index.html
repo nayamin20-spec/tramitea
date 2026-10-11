@@ -40,55 +40,78 @@
 
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
-  {
-    id: 'informe-vida-laboral',
-    rank: 1,
-    commonName: 'Informe de Vida Laboral',
-    officialName: 'Informe de situación en el alta en el Sistema de la Seguridad Social',
-    organismo: { name: 'Tesorería General de la Seguridad Social', acronym: 'TGSS' },
-    category: 'empleo',
-    description: 'Obtén de forma inmediata tu certificado con todos los periodos de alta y baja en la Seguridad Social.',
-    whyIsDifficult: 'Requiere validación de identidad digital rápida (SMS o Cl@ve).',
-    officialDirectUrl: 'https://importass.seg-social.gob.es/trabajadores/vidalaboral',
-    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin', 'sms_sin_certificado'],
-    fastestAuthMethod: 'sms_sin_certificado',
-    cost: '100% Gratuito',
-    estimatedTime: '1-2 minutos',
-    prerequisites: ['Número de Seguridad Social (NASS)', 'Teléfono móvil asociado para recibir el código SMS'],
-    steps: [
-      { stepNumber: 1, title: 'Acceso a Import@ss', instruction: 'Entra en el portal oficial de la Seguridad Social.' },
-      { stepNumber: 2, title: 'Identificación por SMS', instruction: 'Introduce tu DNI/NIE, fecha de nacimiento y el código recibido en el móvil.' },
-      { stepNumber: 3, title: 'Descarga', instruction: 'Genera y descarga el informe oficial en formato PDF al instante.' }
-    ],
-    antiScamAdvice: 'La Seguridad Social nunca te pedirá tarjeta de crédito ni pago alguno por este informe.',
-    isTop10: true,
-    synonyms: ['vida laboral', 'seguridad social', 'informe alta', 'tgss', 'importass', 'trabajar']
-  },
-  {
-    id: 'tarjeta-sanitaria-europea',
-    rank: 2,
-    commonName: 'Tarjeta Sanitaria Europea (TSE)',
-    officialName: 'Solicitud o renovación de la Tarjeta Sanitaria Europea',
-    organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
-    category: 'salud',
-    description: 'Documento personal e intransferible que acredita el derecho a recibir las prestaciones sanitarias necesarias durante una estancia temporal en la UE.',
-    whyIsDifficult: 'No todos los colectivos pueden solicitarla online si no están en activo o dados de alta en el régimen correspondiente.',
-    officialDirectUrl: 'https://misede.seg-social.gob.es/wps/portal/misede/inicio/solicitudtse',
-    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin', 'sin_certificado_datos_personales'],
-    fastestAuthMethod: 'sin_certificado_datos_personales',
-    cost: '100% Gratuito',
-    estimatedTime: '5 minutos (envío por correo postal en ~10 días)',
-    prerequisites: ['Estar afiliado y en situación de alta o asimilada en la Seguridad Social'],
-    steps: [
-      { stepNumber: 1, title: 'Acceso a la Sede', instruction: 'Entra en el servicio de solicitud de la TSE de la Seguridad Social.' },
-      { stepNumber: 2, title: 'Datos de desplazamiento', instruction: 'Rellena tus datos personales y la dirección postal donde deseas recibir la tarjeta.' },
-      { stepNumber: 3, title: 'Recibo', instruction: 'Conserva el resguardo digital mientras te llega la tarjeta física a casa.' }
-    ],
-    antiScamAdvice: 'La tramitación y envío de la TSE por canales oficiales es totalmente gratuita. Desconfía de páginas web de pago.',
-    isTop10: true,
-    synonyms: ['tse', 'tarjeta sanitaria', 'viajar europa', 'sanidad extranjero', 'seguridad social']
-  },
-  {
+        {
+        id: 'informe-vida-laboral',
+        rank: 1,
+        commonName: 'Informe de Vida Laboral',
+        officialName: 'Informe de situación en el alta en el Sistema de la Seguridad Social',
+        organismo: { name: 'Tesorería General de la Seguridad Social', acronym: 'TGSS' },
+        category: 'empleo',
+        description: 'Obtén de forma inmediata tu certificado con todos los periodos de alta y baja en la Seguridad Social.',
+        whyIsDifficult: 'Requiere validación de identidad digital rápida (SMS o Cl@ve).',
+        officialDirectUrl: 'https://portal.seg-social.gob.es/wps/portal/importass/importass/Categorias/Vida+laboral+e+informes/Informes+sobre+tu+situacion+laboral/Informe+de+tu+vida+laboral',
+        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin', 'sms_sin_certificado'],
+        fastestAuthMethod: 'sms_sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: '1-2 minutos',
+        prerequisites: ['Número de Seguridad Social (NASS)', 'Teléfono móvil asociado para recibir el código SMS'],
+        steps: [
+          { stepNumber: 1, title: 'Acceso a Import@ss', instruction: 'Entra en el portal oficial de la Seguridad Social.' },
+          { stepNumber: 2, title: 'Identificación por SMS', instruction: 'Introduce tu DNI/NIE, fecha de nacimiento y el código recibido en el móvil.' },
+          { stepNumber: 3, title: 'Descarga', instruction: 'Genera y descarga el informe oficial en formato PDF al instante.' }
+        ],
+        antiScamAdvice: 'La Seguridad Social nunca te pedirá tarjeta de crédito ni pago alguno por este informe.',
+        isTop10: true,
+        synonyms: ['vida laboral', 'seguridad social', 'informe alta', 'tgss', 'importass', 'trabajar']
+      },
+      {
+        id: 'tarjeta-sanitaria-europea',
+        rank: 2,
+        commonName: 'Tarjeta Sanitaria Europea (TSE)',
+        officialName: 'Solicitud o renovación de la Tarjeta Sanitaria Europea',
+        organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
+        category: 'salud',
+        description: 'Documento personal e intransferible que acredita el derecho a recibir las prestaciones sanitarias necesarias durante una estancia temporal en la UE.',
+        whyIsDifficult: 'No todos los colectivos pueden solicitarla online si no están en activo o dados de alta en el régimen correspondiente.',
+        officialDirectUrl: 'https://sede.seg-social.gob.es/wps/portal/sede/sede/Ciudadanos/asistencia+sanitaria/202046sinc',
+        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin', 'sin_certificado_datos_personales'],
+        fastestAuthMethod: 'sin_certificado_datos_personales',
+        cost: '100% Gratuito',
+        estimatedTime: '5 minutos (envío por correo postal en ~10 días)',
+        prerequisites: ['Estar afiliado y en situación de alta o asimilada en la Seguridad Social'],
+        steps: [
+          { stepNumber: 1, title: 'Acceso a la Sede', instruction: 'Entra en el servicio de solicitud de la TSE de la Seguridad Social.' },
+          { stepNumber: 2, title: 'Datos de desplazamiento', instruction: 'Rellena tus datos personales y la dirección postal donde deseas recibir la tarjeta.' },
+          { stepNumber: 3, title: 'Recibo', instruction: 'Conserva el resguardo digital mientras te llega la tarjeta física a casa.' }
+        ],
+        antiScamAdvice: 'La tramitación y envío de la TSE por canales oficiales es totalmente gratuita. Desconfía de páginas web de pago.',
+        isTop10: true,
+        synonyms: ['tse', 'tarjeta sanitaria', 'viajar europa', 'sanidad extranjero', 'seguridad social']
+      },
+      {
+        id: 'volante-empadronamiento',
+        rank: 4,
+        commonName: 'Certificado / Volante de Empadronamiento',
+        officialName: 'Consulta y gestión de la inscripción padronal municipal',
+        organismo: { name: 'Ayuntamientos / Administración General', acronym: 'AGE' },
+        description: 'Acredita tu residencia y domicilio habitual en tu municipio para múltiples trámites oficiales.',
+        whyIsDifficult: 'Es un trámite 100% local: cada ayuntamiento gestiona su propia sede, requiriendo certificado digital.',
+        officialDirectUrl: 'https://administracion.gob.es/pag_Home/Tu-espacio-europeo/derechos-obligaciones/ciudadanos/residencia/empadronamiento.html',
+        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
+        fastestAuthMethod: 'certificado_dnie',
+        cost: '100% Gratuito',
+        estimatedTime: '3-5 minutos',
+        prerequisites: ['Estar empadronado en el municipio correspondiente', 'Certificado digital o Cl@ve'],
+        steps: [
+          { stepNumber: 1, title: 'Acceso al portal', instruction: 'Entra en la Sede Electrónica de tu Ayuntamiento o mediante el portal informativo estatal.' },
+          { stepNumber: 2, title: 'Selección de documento', instruction: 'Solicita el volante o certificado de empadronamiento actual.' },
+          { stepNumber: 3, title: 'Descarga', instruction: 'Obtén el documento firmado con CSV de forma inmediata.' }
+        ],
+        antiScamAdvice: 'El padrón municipal no tiene coste en la inmensa mayoría de los ayuntamientos.',
+        isTop10: true,
+        synonyms: ['empadronamiento', 'padron', 'volante', 'certificado residencia', 'ayuntamiento']
+      },
+      { 
     id: 'certificado-delitos-sexuales',
     rank: 3,
     commonName: 'Certificado de Delitos de Naturaleza Sexual',
@@ -113,29 +136,6 @@
     synonyms: ['delitos sexuales', 'antecedentes penales', 'menores', 'ministerio justicia', 'certificado sexual']
   },
   {
-    id: 'volante-empadronamiento',
-    rank: 4,
-    commonName: 'Certificado / Volante de Empadronamiento',
-    officialName: 'Consulta y gestión de la inscripción padronal municipal',
-    organismo: { name: 'Ayuntamientos / Administración General', acronym: 'AGE' },
-    description: 'Acredita tu residencia y domicilio habitual en tu municipio para múltiples trámites oficiales.',
-    whyIsDifficult: 'Es un trámite local: cada ayuntamiento tiene su propia Sede, aunque puedes consultarlo globalmente a través de la carpeta ciudadana.',
-    officialDirectUrl: 'https://micasa.administracion.gob.es/',
-    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
-    fastestAuthMethod: 'clave_permanente',
-    cost: '100% Gratuito',
-    estimatedTime: '3-5 minutos',
-    prerequisites: ['Estar empadronado en el municipio correspondiente'],
-    steps: [
-      { stepNumber: 1, title: 'Acceso unificado o local', instruction: 'Entra en Mi Carpeta Ciudadana o en la Sede Electrónica de tu Ayuntamiento.' },
-      { stepNumber: 2, title: 'Selección de documento', instruction: 'Solicita el volante o certificado de empadronamiento actual.' },
-      { stepNumber: 3, title: 'Descarga', instruction: 'Obtén el documento con CSV (Código Seguro de Verificación).' }
-    ],
-    antiScamAdvice: 'El padrón municipal no tiene coste en la inmensa mayoría de los ayuntamientos.',
-    isTop10: true,
-    synonyms: ['empadronamiento', 'padron', 'volante', 'certificado residencia', 'ayuntamiento']
-  },
-                  {
         id: 'prestacion-nacimiento-cuidado-menor',
         rank: 9,
         commonName: 'Baja por Maternidad / Paternidad',
