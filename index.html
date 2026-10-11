@@ -93,23 +93,24 @@
         rank: 4,
         commonName: 'Certificado / Volante de Empadronamiento',
         officialName: 'Consulta y gestión de la inscripción padronal municipal',
-        organismo: { name: 'Ayuntamientos / Administración General', acronym: 'AGE' },
-        description: 'Acredita tu residencia y domicilio habitual en tu municipio para múltiples trámites oficiales.',
-        whyIsDifficult: 'Es un trámite 100% local: cada ayuntamiento gestiona su propia sede, requiriendo certificado digital.',
-        officialDirectUrl: 'https://sede.ine.gob.es/padronciudadano/?lang=es_ES'
+        organismo: { name: 'Instituto Nacional de Estadística / Ayuntamientos', acronym: 'INE' },
+        category: 'otros',
+        description: 'Consulta tus datos padronales o acredita tu residencia habitual en tu municipio para trámites oficiales.',
+        whyIsDifficult: 'Es un trámite local, pero puedes consultar tus datos de empadronamiento oficiales a nivel estatal.',
+        officialDirectUrl: 'https://sede.ine.gob.es/padronciudadano/?lang=es_ES',
         supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
-        fastestAuthMethod: 'certificado_dnie',
+        fastestAuthMethod: 'clave_permanente',
         cost: '100% Gratuito',
         estimatedTime: '3-5 minutos',
-        prerequisites: ['Estar empadronado en el municipio correspondiente', 'Certificado digital o Cl@ve'],
+        prerequisites: ['Estar empadronado en un municipio español', 'Certificado digital o credenciales Cl@ve'],
         steps: [
-          { stepNumber: 1, title: 'Acceso al portal', instruction: 'Entra en la Sede Electrónica de tu Ayuntamiento o mediante el portal informativo estatal.' },
-          { stepNumber: 2, title: 'Selección de documento', instruction: 'Solicita el volante o certificado de empadronamiento actual.' },
-          { stepNumber: 3, title: 'Descarga', instruction: 'Obtén el documento firmado con CSV de forma inmediata.' }
+          { stepNumber: 1, title: 'Acceso a la Sede del INE', instruction: 'Entra en el servicio oficial de consulta del Padrón del INE.' },
+          { stepNumber: 2, title: 'Identificación', instruction: 'Accede con tu certificado digital, DNIe o sistema Cl@ve.' },
+          { stepNumber: 3, title: 'Consulta y descarga', instruction: 'Comprueba tus datos padronales registrados e imprime el justificante.' }
         ],
-        antiScamAdvice: 'El padrón municipal no tiene coste en la inmensa mayoría de los ayuntamientos.',
+        antiScamAdvice: 'La consulta del padrón es totalmente gratuita en portales oficiales.',
         isTop10: true,
-        synonyms: ['empadronamiento', 'padron', 'volante', 'certificado residencia', 'ayuntamiento']
+        synonyms: ['empadronamiento', 'padron', 'volante', 'certificado residencia', 'ayuntamiento', 'ine']
       },
       { 
     id: 'certificado-delitos-sexuales',
