@@ -40,6 +40,30 @@
 
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
+            {
+        id: 'canje-permiso-conducir-extranjero',
+        rank: 11,
+        commonName: 'Canje de Carné de Conducir Extranjero',
+        officialName: 'Canje de permisos de conducción extranjeros',
+        organismo: { name: 'Dirección General de Tráfico', acronym: 'DGT' },
+        category: 'extranjeria',
+        description: 'Homologa y cambia tu carné de conducir de tu país de origen por el permiso de conducir español.',
+        whyIsDifficult: 'Requiere cita previa presencial previa verificación del convenio con el país de origen.',
+        officialDirectUrl: 'https://sede.dgt.gob.es/es/permisos-de-conducir/canjes-de-permisos/canjes-extranjeros/',
+        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin', 'presencial_cita'],
+        fastestAuthMethod: 'clave_permanente',
+        cost: 'Tasa 4.4 (28,87 €) para canjes directos',
+        estimatedTime: '15 minutos (solicitud cita) + trámite presencial',
+        prerequisites: ['Residencia legal en España', 'Permiso de conducir original en vigor', 'País con convenio con España'],
+        steps: [
+          { stepNumber: 1, title: 'Comprobar convenio', instruction: 'Verifica si España tiene acuerdo de canje con tu país de origen.' },
+          { stepNumber: 2, title: 'Solicitar cita DGT', instruction: 'Pide cita previa online en la Sede de la DGT para el trámite de Canjes Extranjeros.' },
+          { stepNumber: 3, title: 'Acudir a la jefatura', instruction: 'Presenta tu carné original, psicotécnico y paga la tasa oficial.' }
+        ],
+        antiScamAdvice: 'Cuidado con gestorías no oficiales que cobran tarifas excesivas por conseguir citas gratuitas de la DGT.',
+        isTop10: false,
+        synonyms: ['canje carne', 'homologar carnet conducir', 'dgt carnet extranjero', 'licencia conducir', 'canje dgt']
+            },
         {
         id: 'informe-vida-laboral',
         rank: 1,
