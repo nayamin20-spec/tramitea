@@ -41,6 +41,35 @@
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
             {
+        id: 'subsidio-mayores-52',
+        rank: 12,
+        commonName: 'Subsidio para Mayores de 52 Años',
+        officialName: 'Subsidio por desempleo para trabajadores mayores de 52 años',
+        organismo: { name: 'Servicio Público de Empleo Estatal', acronym: 'SEPE' },
+        category: 'empleo',
+        description: 'Ayuda mensual para desempleados de 52 o más años que cotiza para la jubilación y se cobra hasta la edad legal de retiro.',
+        whyIsDifficult: 'Exige requisitos estrictos de cotización previa (15 años) y carencia de rentas personales.',
+        officialDirectUrl: 'https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo/solicitud-prestaciones.html',
+        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
+        fastestAuthMethod: 'clave_permanente',
+        cost: '100% Gratuito',
+        estimatedTime: '5-10 minutos (solicitud online)',
+        prerequisites: [
+          'Tener 52 años cumplidos y estar en desempleo',
+          'Agotar paro o subsidio anterior',
+          'Mínimo 15 años cotizados (2 en los últimos 15) y 6 años en desempleo',
+          'Rentas propias inferiores al 75% del SMI'
+        ],
+        steps: [
+          { stepNumber: 1, title: 'Acceso a la Sede del SEPE', instruction: 'Entra en el servicio telemático de solicitud de prestaciones del SEPE.' },
+          { stepNumber: 2, title: 'Identificación y datos', instruction: 'Accede con Cl@ve o certificado digital y completa la declaración de rentas personales.' },
+          { stepNumber: 3, title: 'Presentación', instruction: 'Adjunta el justificante bancario IBAN y firma la solicitud telemática.' }
+        ],
+        antiScamAdvice: 'La tramitación del subsidio del SEPE es totalmente gratuita. Desconfía de portales privados de pago.',
+        isTop10: false,
+        synonyms: ['subsidio 52 años', 'ayuda mayores 52', 'paro mayores 52', 'sepe 52 años', 'jubilacion anticipada subsidio']
+            },
+            {
         id: 'canje-permiso-conducir-extranjero',
         rank: 11,
         commonName: 'Canje de Carné de Conducir Extranjero',
