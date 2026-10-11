@@ -40,7 +40,7 @@
 
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
-        {
+  {
     id: 'alta-autonomos-reta',
     rank: 13,
     commonName: 'Alta en Autónomos (RETA y Hacienda)',
@@ -49,14 +49,14 @@
     category: 'empleo',
     description: 'Tramita en un solo proceso tu alta como trabajador por cuenta propia tanto en la Seguridad Social como en Hacienda.',
     whyIsDifficult: 'Requiere indicar la actividad económica (IAE) y la base de cotización de forma precisa.',
-    officialDirectUrl: 'https://importass.seg-social.gob.es/trabajadores/altaautonomo',
+    officialDirectUrl: 'https://portal.seg-social.gob.es/wps/portal/importass/importass',
     supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
     fastestAuthMethod: 'clave_permanente',
     cost: '100% Gratuito',
     estimatedTime: '5-10 minutos',
     prerequisites: ['DNI/NIE en vigor', 'Datos de la actividad a realizar', 'Cuenta bancaria (IBAN)'],
     steps: [
-      { stepNumber: 1, title: 'Acceso a Import@ss', instruction: 'Entra en el servicio de alta de autónomos del portal oficial.' },
+      { stepNumber: 1, title: 'Acceso a Import@ss', instruction: 'Entra en el portal oficial de la Seguridad Social.' },
       { stepNumber: 2, title: 'Datos de actividad', instruction: 'Selecciona tu epígrafe de IAE y la previsión de ingresos reales.' },
       { stepNumber: 3, title: 'Confirmación', instruction: 'Firma y descarga la resolución oficial del alta.' }
     ],
@@ -73,7 +73,7 @@
     category: 'empleo',
     description: 'Cuota reducida en la cotización a la Seguridad Social durante los primeros meses de actividad.',
     whyIsDifficult: 'Se debe solicitar de forma explícita al procesar el alta o en el plazo indicado tras la misma.',
-    officialDirectUrl: 'https://importass.seg-social.gob.es/',
+    officialDirectUrl: 'https://portal.seg-social.gob.es/wps/portal/importass/importass',
     supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
     fastestAuthMethod: 'clave_permanente',
     cost: '100% Gratuito',
@@ -86,7 +86,7 @@
     antiScamAdvice: 'Se aplica de forma automática al cumplir los requisitos oficiales sin intermediarios.',
     isTop10: false,
     synonyms: ['tarifa plana', 'cuota reducida', 'bonificacion autonomos', 'cuota autonomo']
-  },
+      },
                      {
         id: 'subsidio-mayores-52',
         rank: 12,
