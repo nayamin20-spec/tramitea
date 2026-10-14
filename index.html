@@ -5,17 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tramitea - Todos tus trámites en un clic</title>
   <meta name="description" content="Buscador directo y verificado a los trámites oficiales de la administración pública española." />
-<!-- Open Graph para redes sociales (WhatsApp, Facebook) -->
-<meta property="og:title" content="Tramitea - Trámites y Cita Previa en España">
-<meta property="og:description" content="Guías claras y sencillas para gestionar tus trámites oficiales y cita previa.">
-<meta property="og:url" content="https://tramitea.org/">
-<meta property="og:type" content="website">
-  
   <meta name="google-site-verification" content="Xx8G8aMftgwCkh0pLwkeYCDd1G7-DWSfRK1xD_Rk8hw" />
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,443 +34,30 @@
 
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
-          {
-    id: 'beca-general-mec',
-    rank: 15,
-    commonName: 'Beca MEC (Ministerio de Educación)',
-    officialName: 'Becas y ayudas para estudiantes de niveles postobligatorios',
-    organismo: { name: 'Ministerio de Educación, Formación Profesional y Deportes', acronym: 'MEFPD' },
-    category: 'educacion',
-    subcategory: 'becas',
-    description: 'Ayuda económica estatal para estudios universitarios, FP, Bachillerato y otros estudios postobligatorios.',
-    whyIsDifficult: 'Plazos de solicitud muy estrictos y requisitos económicos/académicos combinados.',
-    officialDirectUrl: 'https://sede.educacion.gob.es/informacion-ayuda/tramites/becas-ayudas.html',
-    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
-    fastestAuthMethod: 'clave_permanente',
-    cost: '100% Gratuito',
-    estimatedTime: '10-15 minutos',
-    prerequisites: ['Estar matriculado en estudios oficiales', 'Cumplir los umbrales de renta familiar'],
-    steps: [
-      { stepNumber: 1, title: 'Acceso a la Sede', instruction: 'Entra en la Sede Electrónica del Ministerio de Educación.' },
-      { stepNumber: 2, title: 'Formulario de datos', instruction: 'Rellena la información académica y los miembros de la unidad familiar.' },
-      { stepNumber: 3, title: 'Presentación', instruction: 'Firma y presenta la solicitud telemática guardando el justificante.' }
-    ],
-    antiScamAdvice: 'La solicitud de becas del Ministerio es totalmente gratuita. No pagues por tramitaciones externas.',
-    isTop10: false,
-    synonyms: ['beca mec', 'beca ministerio', 'beca universidad', 'beca bachillerato', 'beca fp']
-          },   
-  {
-    id: 'alta-autonomos-reta',
-    rank: 13,
-    commonName: 'Alta en Autónomos (RETA y Hacienda)',
-    officialName: 'Alta en el Régimen Especial de Trabajadores Autónomos y Censos de Hacienda',
-    organismo: { name: 'Seguridad Social e Impuestos', acronym: 'TGSS / AEAT' },
-    category: 'empleo',
-    description: 'Tramita en un solo proceso tu alta como trabajador por cuenta propia tanto en la Seguridad Social como en Hacienda.',
-    whyIsDifficult: 'Requiere indicar la actividad económica (IAE) y la base de cotización de forma precisa.',
-    officialDirectUrl: 'https://portal.seg-social.gob.es/wps/portal/importass/importass',
-    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
-    fastestAuthMethod: 'clave_permanente',
-    cost: '100% Gratuito',
-    estimatedTime: '5-10 minutos',
-    prerequisites: ['DNI/NIE en vigor', 'Datos de la actividad a realizar', 'Cuenta bancaria (IBAN)'],
-    steps: [
-      { stepNumber: 1, title: 'Acceso a Import@ss', instruction: 'Entra en el portal oficial de la Seguridad Social.' },
-      { stepNumber: 2, title: 'Datos de actividad', instruction: 'Selecciona tu epígrafe de IAE y la previsión de ingresos reales.' },
-      { stepNumber: 3, title: 'Confirmación', instruction: 'Firma y descarga la resolución oficial del alta.' }
-    ],
-    antiScamAdvice: 'Las altas en los organismos oficiales son gratuitas. Cuidado con webs no oficiales que cobran por el trámite.',
-    isTop10: false,
-    synonyms: ['alta autonomo', 'reta', 'darse de alta autonomo', 'importass autonomos', 'hacienda autonomo']
-  },
-  {
-    id: 'tarifa-plana-autonomos',
-    rank: 14,
-    commonName: 'Solicitud de Tarifa Plana para Autónomos',
-    officialName: 'Reducción por inicio de actividad por cuenta propia',
-    organismo: { name: 'Tesorería General de la Seguridad Social', acronym: 'TGSS' },
-    category: 'empleo',
-    description: 'Cuota reducida en la cotización a la Seguridad Social durante los primeros meses de actividad.',
-    whyIsDifficult: 'Se debe solicitar de forma explícita al procesar el alta o en el plazo indicado tras la misma.',
-    officialDirectUrl: 'https://portal.seg-social.gob.es/wps/portal/importass/importass',
-    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
-    fastestAuthMethod: 'clave_permanente',
-    cost: '100% Gratuito',
-    estimatedTime: '2-3 minutos',
-    prerequisites: ['No haber estado de alta como autónomo en los 2 últimos años'],
-    steps: [
-      { stepNumber: 1, title: 'Proceso de alta', instruction: 'Marca la casilla correspondiente a la bonificación durante el alta en Import@ss.' },
-      { stepNumber: 2, title: 'Verificación', instruction: 'Comprueba en el recibo de liquidación la aplicación de la tarifa reducida.' }
-    ],
-    antiScamAdvice: 'Se aplica de forma automática al cumplir los requisitos oficiales sin intermediarios.',
-    isTop10: false,
-    synonyms: ['tarifa plana', 'cuota reducida', 'bonificacion autonomos', 'cuota autonomo']
-      },
-                     {
-        id: 'subsidio-mayores-52',
-        rank: 12,
-        commonName: 'Subsidio para Mayores de 52 Años',
-        officialName: 'Subsidio por desempleo para trabajadores mayores de 52 años',
-        organismo: { name: 'Servicio Público de Empleo Estatal', acronym: 'SEPE' },
-        category: 'empleo',
-        description: 'Ayuda mensual para desempleados de 52 o más años que cotiza para la jubilación y se cobra hasta la edad legal de retiro.',
-        whyIsDifficult: 'Exige requisitos estrictos de cotización previa (15 años) y carencia de rentas personales.',
-        officialDirectUrl: 'https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo.html',
-        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
-        fastestAuthMethod: 'clave_permanente',
-        cost: '100% Gratuito',
-        estimatedTime: '5-10 minutos (solicitud online)',
-        prerequisites: [
-          'Tener 52 años cumplidos y estar en desempleo',
-          'Agotar paro o subsidio anterior',
-          'Mínimo 15 años cotizados (2 en los últimos 15) y 6 años en desempleo',
-          'Rentas propias inferiores al 75% del SMI'
-        ],
-        steps: [
-          { stepNumber: 1, title: 'Acceso a la Sede del SEPE', instruction: 'Entra en el apartado de Protección por desempleo del SEPE.' },
-          { stepNumber: 2, title: 'Identificación y datos', instruction: 'Accede con Cl@ve o certificado digital y completa la declaración de rentas personales.' },
-          { stepNumber: 3, title: 'Presentación', instruction: 'Adjunta el justificante bancario IBAN y firma la solicitud telemática.' }
-        ],
-        antiScamAdvice: 'La tramitación del subsidio del SEPE es totalmente gratuita. Desconfía de portales privados de pago.',
-        isTop10: false,
-        synonyms: ['subsidio 52 años', 'ayuda mayores 52', 'paro mayores 52', 'sepe 52 años', 'jubilacion anticipada subsidio']
-         },
-            {
-        id: 'canje-permiso-conducir-extranjero',
-        rank: 11,
-        commonName: 'Canje de Carné de Conducir Extranjero',
-        officialName: 'Canje de permisos de conducción extranjeros',
-        organismo: { name: 'Dirección General de Tráfico', acronym: 'DGT' },
-        category: 'extranjeria',
-        description: 'Homologa y cambia tu carné de conducir de tu país de origen por el permiso de conducir español.',
-        whyIsDifficult: 'Requiere cita previa presencial previa verificación del convenio con el país de origen.',
-        officialDirectUrl: 'https://www.dgt.es/nuestros-servicios/permisos-de-conducir/permisos-extranjeros-y-de-fuerzas-y-cuerpos-de-seguridad/canjes-de-permisos/canjes-de-permisos-extranjeros/',
-        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin', 'presencial_cita'],
-        fastestAuthMethod: 'clave_permanente',
-        cost: 'Tasa 4.4 (28,87 €) para canjes directos',
-        estimatedTime: '15 minutos (solicitud cita) + trámite presencial',
-        prerequisites: ['Residencia legal en España', 'Permiso de conducir original en vigor', 'País con convenio con España'],
-        steps: [
-          { stepNumber: 1, title: 'Comprobar convenio', instruction: 'Verifica si España tiene acuerdo de canje con tu país de origen.' },
-          { stepNumber: 2, title: 'Solicitar cita DGT', instruction: 'Pide cita previa online en la Sede de la DGT para el trámite de Canjes Extranjeros.' },
-          { stepNumber: 3, title: 'Acudir a la jefatura', instruction: 'Presenta tu carné original, psicotécnico y paga la tasa oficial.' }
-        ],
-        antiScamAdvice: 'Cuidado con gestorías no oficiales que cobran tarifas excesivas por conseguir citas gratuitas de la DGT.',
-        isTop10: false,
-        synonyms: ['canje carne', 'homologar carnet conducir', 'dgt carnet extranjero', 'licencia conducir', 'canje dgt']
-            },
-        {
-        id: 'informe-vida-laboral',
+      {
+        id: 'vida-laboral',
         rank: 1,
-        commonName: 'Informe de Vida Laboral',
-        officialName: 'Informe de situación en el alta en el Sistema de la Seguridad Social',
-        organismo: { name: 'Tesorería General de la Seguridad Social', acronym: 'TGSS' },
-        category: 'empleo',
-        description: 'Obtén de forma inmediata tu certificado con todos los periodos de alta y baja en la Seguridad Social.',
-        whyIsDifficult: 'Requiere validación de identidad digital rápida (SMS o Cl@ve).',
-        officialDirectUrl: 'https://portal.seg-social.gob.es/wps/portal/importass/importass/Categorias/Vida+laboral+e+informes/Informes+sobre+tu+situacion+laboral/Informe+de+tu+vida+laboral',
-        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin', 'sms_sin_certificado'],
+        commonName: 'Pedir la vida laboral',
+        officialName: 'Informe de vida laboral e informe de bases de cotización',
+        organismo: { name: 'Tesorería General de la Seguridad Social', acronym: 'TGSS / Import@ss' },
+        category: 'laboral',
+        description: 'Acredita todos los días y periodos que has cotizado a la Seguridad Social a lo largo de tu vida laboral.',
+        whyIsDifficult: 'Los buscadores suelen posicionar webs de gestorías fraudulentas que cobran entre 15€ y 30€ por un trámite gratuito.',
+        officialDirectUrl: 'https://portal.seg-social.gob.es/wps/portal/importass/importass/Categorias/Vida+laboral+e+informes/Informes+sobre+tu+situacion+laboral/Informe+de+vida+laboral',
+        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie', 'sms_sin_certificado'],
         fastestAuthMethod: 'sms_sin_certificado',
         cost: '100% Gratuito',
-        estimatedTime: '1-2 minutos',
-        prerequisites: ['Número de Seguridad Social (NASS)', 'Teléfono móvil asociado para recibir el código SMS'],
+        estimatedTime: '2 minutos (descarga PDF)',
+        prerequisites: ['Tener el móvil registrado en la Seguridad Social (para SMS) o disponer de Cl@ve/Certificado'],
         steps: [
-          { stepNumber: 1, title: 'Acceso a Import@ss', instruction: 'Entra en el portal oficial de la Seguridad Social.' },
-          { stepNumber: 2, title: 'Identificación por SMS', instruction: 'Introduce tu DNI/NIE, fecha de nacimiento y el código recibido en el móvil.' },
-          { stepNumber: 3, title: 'Descarga', instruction: 'Genera y descarga el informe oficial en formato PDF al instante.' }
+          { stepNumber: 1, title: 'Acceder a Import@ss', instruction: 'Entra en el portal oficial directo de la TGSS.' },
+          { stepNumber: 2, title: 'Elegir Vía SMS', instruction: 'Si no tienes Cl@ve, introduce DNI, fecha de nacimiento y tu número de teléfono.' },
+          { stepNumber: 3, title: 'Descarga inmediata', instruction: 'Introduce el código SMS de 6 dígitos y descarga tu informe oficial en PDF.' }
         ],
-        antiScamAdvice: 'La Seguridad Social nunca te pedirá tarjeta de crédito ni pago alguno por este informe.',
+        antiScamAdvice: 'El trámite es 100% oficial y gratuito. Jamás pagues en webs privadas.',
         isTop10: true,
-        synonyms: ['vida laboral', 'seguridad social', 'informe alta', 'tgss', 'importass', 'trabajar']
+        synonyms: ['vida laboral', 'pedir vida laboral', 'dias cotizados', 'años cotizados', 'bases de cotizacion', 'curriculum', 'seguridad social', 'importass']
       },
-      {
-        id: 'tarjeta-sanitaria-europea',
-        rank: 2,
-        commonName: 'Tarjeta Sanitaria Europea (TSE)',
-        officialName: 'Solicitud o renovación de la Tarjeta Sanitaria Europea',
-        organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
-        category: 'salud',
-        description: 'Documento personal e intransferible que acredita el derecho a recibir las prestaciones sanitarias necesarias durante una estancia temporal en la UE.',
-        whyIsDifficult: 'No todos los colectivos pueden solicitarla online si no están en activo o dados de alta en el régimen correspondiente.',
-        officialDirectUrl: 'https://sede.seg-social.gob.es/wps/portal/sede/sede/Ciudadanos/asistencia+sanitaria/202046sinc',
-        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin', 'sin_certificado_datos_personales'],
-        fastestAuthMethod: 'sin_certificado_datos_personales',
-        cost: '100% Gratuito',
-        estimatedTime: '5 minutos (envío por correo postal en ~10 días)',
-        prerequisites: ['Estar afiliado y en situación de alta o asimilada en la Seguridad Social'],
-        steps: [
-          { stepNumber: 1, title: 'Acceso a la Sede', instruction: 'Entra en el servicio de solicitud de la TSE de la Seguridad Social.' },
-          { stepNumber: 2, title: 'Datos de desplazamiento', instruction: 'Rellena tus datos personales y la dirección postal donde deseas recibir la tarjeta.' },
-          { stepNumber: 3, title: 'Recibo', instruction: 'Conserva el resguardo digital mientras te llega la tarjeta física a casa.' }
-        ],
-        antiScamAdvice: 'La tramitación y envío de la TSE por canales oficiales es totalmente gratuita. Desconfía de páginas web de pago.',
-        isTop10: true,
-        synonyms: ['tse', 'tarjeta sanitaria', 'viajar europa', 'sanidad extranjero', 'seguridad social']
-      },
-      {
-        id: 'volante-empadronamiento',
-        rank: 4,
-        commonName: 'Certificado / Volante de Empadronamiento',
-        officialName: 'Consulta y gestión de la inscripción padronal municipal',
-        organismo: { name: 'Instituto Nacional de Estadística / Ayuntamientos', acronym: 'INE' },
-        category: 'otros',
-        description: 'Consulta tus datos padronales o acredita tu residencia habitual en tu municipio para trámites oficiales.',
-        whyIsDifficult: 'Es un trámite local, pero puedes consultar tus datos de empadronamiento oficiales a nivel estatal.',
-        officialDirectUrl: 'https://sede.ine.gob.es/padronciudadano/?lang=es_ES',
-        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
-        fastestAuthMethod: 'clave_permanente',
-        cost: '100% Gratuito',
-        estimatedTime: '3-5 minutos',
-        prerequisites: ['Estar empadronado en un municipio español', 'Certificado digital o credenciales Cl@ve'],
-        steps: [
-          { stepNumber: 1, title: 'Acceso a la Sede del INE', instruction: 'Entra en el servicio oficial de consulta del Padrón del INE.' },
-          { stepNumber: 2, title: 'Identificación', instruction: 'Accede con tu certificado digital, DNIe o sistema Cl@ve.' },
-          { stepNumber: 3, title: 'Consulta y descarga', instruction: 'Comprueba tus datos padronales registrados e imprime el justificante.' }
-        ],
-        antiScamAdvice: 'La consulta del padrón es totalmente gratuita en portales oficiales.',
-        isTop10: true,
-        synonyms: ['empadronamiento', 'padron', 'volante', 'certificado residencia', 'ayuntamiento', 'ine']
-      },
-      { 
-    id: 'certificado-delitos-sexuales',
-    rank: 3,
-    commonName: 'Certificado de Delitos de Naturaleza Sexual',
-    officialName: 'Certificado del Registro Central de Delincuentes Sexuales',
-    organismo: { name: 'Ministerio de Justicia', acronym: 'MJU' },
-    category: 'otros',
-    description: 'Certificado obligatorio para cualquier profesión, oficio o actividad que implique contacto habitual con menores.',
-    whyIsDifficult: 'Exige certificado digital o Cl@ve obligatoriamente para la descarga inmediata.',
-    officialDirectUrl: 'https://sede.mjusticia.gob.es/es/tramites/certificado-registro-central',
-    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
-    fastestAuthMethod: 'certificado_dnie',
-    cost: '100% Gratuito',
-    estimatedTime: '2-3 minutos',
-    prerequisites: ['Certificado digital, DNI electrónico o credenciales Cl@ve activas'],
-    steps: [
-      { stepNumber: 1, title: 'Acceso a Sede de Justicia', instruction: 'Entra en el trámite de delincuentes sexuales del Ministerio de Justicia.' },
-      { stepNumber: 2, title: 'Solicitud online', instruction: 'Identifícate con tu certificado o Cl@ve y confirma la finalidad.' },
-      { stepNumber: 3, title: 'Descarga del PDF', instruction: 'Obtén el certificado firmado electrónicamente al momento.' }
-    ],
-    antiScamAdvice: 'Cualquier empresa que te lo exija para trabajar con menores debe aceptarlo gratis.',
-    isTop10: true,
-    synonyms: ['delitos sexuales', 'antecedentes penales', 'menores', 'ministerio justicia', 'certificado sexual']
-  },
-  {
-        id: 'prestacion-nacimiento-cuidado-menor',
-        rank: 9,
-        commonName: 'Baja por Maternidad / Paternidad',
-        officialName: 'Prestación por nacimiento y cuidado de menor',
-        organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
-        category: 'familia',
-        description: 'Solicitud del subsidio por maternidad o paternidad tras el nacimiento o adopción de un hijo.',
-        whyIsDifficult: 'Requiere haber registrado el informe de maternidad/paternidad de la empresa previamente.',
-        officialDirectUrl: 'https://sede-tu.seg-social.gob.es/',
-        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
-        fastestAuthMethod: 'clave_permanente',
-        cost: '100% Gratuito',
-        estimatedTime: '10 minutos (resolución en pocos días)',
-        prerequisites: ['Registro del nacimiento', 'Informe de la empresa si eres trabajador por cuenta ajena'],
-        steps: [
-          { stepNumber: 1, title: 'Acceso a Tu Seguridad Social', instruction: 'Entra en la plataforma Tu Seguridad Social con Cl@ve o Certificado.' },
-          { stepNumber: 2, title: 'Simulación y Solicitud', instruction: 'Selecciona la fecha de inicio del descanso y adjunta el certificado del hospital.' },
-          { stepNumber: 3, title: 'Confirmación', instruction: 'Revisa los datos del pago y descarga el justificante.' }
-        ],
-        antiScamAdvice: 'La solicitud en la Sede Oficial del INSS es totalmente gratuita.',
-        isTop10: true,
-        synonyms: ['maternidad', 'paternidad', 'baja bebe', 'nacimiento', 'inss', 'prestacion nacimiento']
-      },
-      {
-        id: 'deduccion-maternidad-modelo-140',
-        rank: 10,
-        commonName: 'Pago Anticipado Deducción Maternidad (100€/mes)',
-        officialName: 'Abono anticipado de la deducción por maternidad - Modelo 140',
-        organismo: { name: 'Agencia Tributaria', acronym: 'AEAT' },
-        category: 'impuestos',
-        description: 'Solicitud del cobro mensual de 100 € por cada hijo menor de 3 años para madres trabajadoras o perceptoras de prestaciones.',
-        whyIsDifficult: 'El modelo requiere el DNI/NIE de los progenitores y datos del libro de familia/registro civil.',
-        officialDirectUrl: 'https://sede.agenciatributaria.gob.es/Sede/procedimientoini/GZ25.shtml',
-        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
-        fastestAuthMethod: 'clave_pin',
-        cost: '100% Gratuito',
-        estimatedTime: '5 minutos',
-        prerequisites: ['Hijo menor de 3 años', 'Estar dada de alta en la Seguridad Social o percibir prestación/subsidio'],
-        steps: [
-          { stepNumber: 1, title: 'Acceso al Modelo 140', instruction: 'Ingresa en la Sede de la AEAT en el trámite del Modelo 140.' },
-          { stepNumber: 2, title: 'Datos del menor', instruction: 'Indica los datos del recién nacido y la cuenta bancaria para el abono.' },
-          { stepNumber: 3, title: 'Envío', instruction: 'Firma y presenta la solicitud online.' }
-        ],
-        antiScamAdvice: 'Hacienda realiza la transferencia directa a tu IBAN sin comisiones intermedias.',
-        isTop10: false,
-        synonyms: ['100 euros bebe', 'modelo 140', 'deduccion maternidad', 'ayuda madre', 'hacienda bebe']
-      },
-            {
-        id: 'certificado-estar-al-corriente-seguridad-social',
-        rank: 17,
-        commonName: 'Certificado de Estar al Corriente con la Seguridad Social',
-        officialName: 'Informe de estar al corriente en las obligaciones de la Seguridad Social',
-        organismo: { name: 'Tesorería General de la Seguridad Social', acronym: 'TGSS' },
-        category: 'trabajo',
-        description: 'Documento oficial que acredita que no existen deudas pendientes con la Seguridad Social. Imprescindible para licitaciones, becas y contratación.',
-        whyIsDifficult: 'Es muy solicitado pero las URLs de Import@ss cambian según la sección específica.',
-        officialDirectUrl: 'https://portal.seg-social.gob.es/wps/portal/importass/importass/Categorias/Consulta+de+pagos+y+deudas',
-        supportedAuth: ['clave_permanente', 'certificado_dnie', 'sms_sin_certificado'],
-        fastestAuthMethod: 'sms_sin_certificado',
-        cost: '100% Gratuito',
-        estimatedTime: 'Inmediato (descarga en PDF)',
-        prerequisites: ['Número de Afiliación a la Seguridad Social (NAF) o DNI/NIE registrado'],
-        steps: [
-          { stepNumber: 1, title: 'Acceder a Import@ss', instruction: 'Entra en el apartado Consulta de pagos y deudas del portal Import@ss.' },
-          { stepNumber: 2, title: 'Identificación rápida', instruction: 'Accede con Cl@ve, Certificado o vía SMS recibiendo un código en tu teléfono móvil.' },
-          { stepNumber: 3, title: 'Descarga del informe', instruction: 'Genera el informe oficial en PDF firmado electrónicamente.' }
-        ],
-        antiScamAdvice: 'La obtención de este informe es totalmente gratuita. Desconfía de gestorías online que cobran por descargártelo.',
-        isTop10: false,
-        synonyms: ['al corriente seguridad social', 'deudas tgss', 'certificado deudas', 'importass deudas']
-      },
-            {
-      id: 'tramites-dgt',
-        rank: 1,
-        commonName: 'Trámites DGT',
-        officialName: 'Sede Electrónica de la Dirección General de Tráfico',
-        organismo: { name: 'Trámites DGT', acronym: 'DGT' },
-        category: 'movilidad',
-        description: 'Acceso a la Sede Electrónica de la DGT para la consulta de puntos, pago de multas, cambio de titularidad de vehículos e informes.',
-        whyIsDifficult: 'Las URLs específicas de la DGT cambian frecuentemente provocando errores 404, por lo que es mejor acceder directamente al portal general.',
-        officialDirectUrl: 'https://sede.dgt.gob.es/',
-        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
-        fastestAuthMethod: 'clave_permanente',
-        cost: '100% Gratuito (salvo pago de tasas específicas)',
-        estimatedTime: 'Inmediato',
-        prerequisites: ['Permiso de conducir o documentación del vehículo'],
-        steps: [
-          { stepNumber: 1, title: 'Acceder a la Sede DGT', instruction: 'Entra a la Sede Electrónica oficial de la Dirección General de Tráfico.' },
-          { stepNumber: 2, title: 'Seleccionar el trámite', instruction: 'Elige entre Puntos, Multas, Vehículos o Permisos de Conducir.' },
-          { stepNumber: 3, title: 'Identificación', instruction: 'Accede con Cl@ve, DNIe o certificado digital para completar la gestión.' }
-        ],
-        antiScamAdvice: 'Accede siempre desde el portal oficial de la DGT. No pagues por gestiones que son gratuitas.',
-        isTop10: true,
-        synonyms: ['dgt', 'puntos', 'multas', 'trafico', 'transferencia vehiculo', 'carnet conducir']
-      },
-            {
-        id: 'autorizacion-regreso',
-        rank: 11,
-        commonName: 'Autorización de Regreso a España',
-        officialName: 'Autorización de regreso para residentes',
-        organismo: { name: 'Ministerio de Política Territorial / Policía Nacional', acronym: 'Extranjería' },
-        category: 'extranjeria',
-        description: 'Permiso temporal para salir de España y volver a entrar mientras tu tarjeta de residencia o prórroga está en trámite de renovación.',
-        whyIsDifficult: 'Se debe solicitar con antelación justificada a un viaje inminente y requiere cita previa en la Oficina de Extranjería o Comisaría.',
-        officialDirectUrl: 'https://sede.administracionespublicas.gob.es',
-        supportedAuth: ['certificado_dnie', 'clave'],
-        fastestAuthMethod: 'certificado_dnie',
-        cost: 'Tasa oficial modelo 790 (código 052)',
-        estimatedTime: 'Expedición presencial rápida',
-        prerequisites: ['Tener la tarjeta de residencia caducada y la solicitud de renovación presentada en plazo'],
-        steps: [
-          { stepNumber: 1, title: 'Solicitar Cita', instruction: 'Pide cita previa para "Autorización de Regreso" en la Sede de Administraciones Públicas.' },
-          { stepNumber: 2, title: 'Preparar documentos', instruction: 'Lleva pasaporte, solicitud de renovación anterior y billetes de viaje que justifiquen el desplazamiento.' },
-          { stepNumber: 3, title: 'Obtención', instruction: 'Acude a la oficina asignada para que te expidan el documento de viaje.' }
-        ],
-        antiScamAdvice: 'No viajes fuera de España con la tarjeta caducada sin este permiso si tu renovación sigue pendiente.',
-        isTop10: false,
-        synonyms: ['autorizacion regreso', 'viajar con residencia caducada', 'permiso salida y entrada españa']
-      },
-            {
-        id: 'certificado-matrimonio-defuncion',
-        rank: 8,
-        commonName: 'Certificado de Matrimonio o Defunción',
-        officialName: 'Certificado de matrimonio o defunción (Ministerio de Justicia)',
-        organismo: { name: 'Ministerio de Justicia', acronym: 'MinJusticia' },
-        category: 'justicia',
-        description: 'Documento oficial que acredita el matrimonio o el fallecimiento de una persona, así como la fecha y lugar.',
-        whyIsDifficult: 'Hay múltiples webs de gestorías privadas que cobran tasas elevadas por tramitar un documento que es gratuito.',
-        officialDirectUrl: 'https://sede.mjusticia.gob.es',
-        supportedAuth: ['certificado_dnie', 'clave_permanente', 'sin_certificado'],
-        fastestAuthMethod: 'sin_certificado',
-        cost: '100% Gratuito',
-        estimatedTime: 'Presencial o descarga online',
-        prerequisites: ['Datos registrales del acta (tomo, página, folio o datos de los inscritos)'],
-        steps: [
-          { stepNumber: 1, title: 'Acceder a la Sede', instruction: 'Entra en la Sede Electrónica del Ministerio de Justicia.' },
-          { stepNumber: 2, title: 'Seleccionar tipo', instruction: 'Elige entre certificado de matrimonio o de defunción y cubre los datos.' },
-          { stepNumber: 3, title: 'Obtención', instruction: 'Descarga el certificado con firma electrónica o solicítalo por correo.' }
-        ],
-        antiScamAdvice: 'Este trámite en el Ministerio de Justicia es totalmente gratuito. No uses intermediarios de pago.',
-        isTop10: false,
-        synonyms: ['matrimonio', 'defunción', 'certificado de defunción', 'certificado de matrimonio', 'partida de matrimonio', 'certificado de fallecimiento']
-      },
-            {
-      id: 'registro-clave',
-        rank: 7,
-        commonName: 'Registrarse en Cl@ve',
-        officialName: 'Obtención de credenciales del sistema Cl@ve',
-        organismo: { name: 'Agencia Tributaria y Ministerio de Hacienda', acronym: 'AEAT / Cl@ve' },
-        category: 'digital',
-        description: 'Sistema de identificación electrónica para relacionarse con las Administraciones Públicas españolas.',
-        whyIsDifficult: 'Existen varios niveles de registro y requiere verificar el número de teléfono móvil.',
-        officialDirectUrl: 'https://clave.gob.es',
-        supportedAuth: ['videollamada', 'presencial', 'certificado_dnie'],
-        fastestAuthMethod: 'videollamada',
-        cost: '100% Gratuito',
-        estimatedTime: '10 minutos',
-        prerequisites: ['DNI o NIE y un teléfono móvil a tu nombre'],
-        steps: [
-          { stepNumber: 1, title: 'Acceso al registro', instruction: 'Entra en la web oficial de Cl@ve.' },
-          { stepNumber: 2, title: 'Elegir método', instruction: 'Selecciona registro por videollamada o con certificado digital.' },
-          { stepNumber: 3, title: 'Validación', instruction: 'Completa los datos y obtén tu activación permanente.' }
-        ],
-        antiScamAdvice: 'Cl@ve es un sistema público y gratuito del Estado español.',
-        isTop10: true,
-        synonyms: ['clave pin', 'clave permanente', 'registro clave', 'identidad digital']
-        },
-            {
-        id: 'certificado-nacimiento',
-        rank: 5,
-        commonName: 'Certificado de Nacimiento',
-        officialName: 'Certificado de nacimiento (Ministerio de Justicia)',
-        organismo: { name: 'Ministerio de Justicia', acronym: 'MinJusticia' },
-        category: 'justicia',
-        description: 'Documento oficial que acredita el hecho del nacimiento, fecha, hora y sexo.',
-        whyIsDifficult: 'Existen páginas intermediarias que cobran por solicitar un documento que es gratuito en la sede oficial.',
-        officialDirectUrl: 'https://sede.mjusticia.gob.es',
-        supportedAuth: ['certificado_dnie', 'clave_permanente', 'sin_certificado'],
-        fastestAuthMethod: 'sin_certificado',
-        cost: '100% Gratuito',
-        estimatedTime: 'Presencial o descarga online',
-        prerequisites: ['Datos registrales (tomo, página, folio o datos personales)'],
-        steps: [
-          { stepNumber: 1, title: 'Acceder a la Sede', instruction: 'Entra en el apartado de certificados del Ministerio de Justicia.' },
-          { stepNumber: 2, title: 'Rellenar datos', instruction: 'Indica los datos del inscrito o identifícate digitalmente.' },
-          { stepNumber: 3, title: 'Obtención', instruction: 'Descarga el certificado electrónico o recíbelo por correo postal.' }
-        ],
-        antiScamAdvice: 'El certificado oficial de nacimiento expedido por el Ministerio es gratuito.',
-        isTop10: true,
-        synonyms: ['nacimiento', 'partida de nacimiento', 'certificado literal']
-      },
-            {
-        id: 'cancelacion-antecedentes',
-        rank: 4,
-        commonName: 'Cancelación de Antecedentes Penales',
-        officialName: 'Cancelación de antecedentes penales',
-        organismo: { name: 'Ministerio de Justicia', acronym: 'MinJusticia' },
-        category: 'justicia',
-        description: 'Solicitud para cancelar antecedentes penales una vez cumplidas las penas y transcurridos los plazos legales.',
-        whyIsDifficult: 'Requiere cumplir plazos de carencia específicos según la condena y presentar la documentación exacta.',
-        officialDirectUrl: 'https://www.mjusticia.gob.es',
-        supportedAuth: ['certificado_dnie', 'clave_permanente'],
-        fastestAuthMethod: 'certificado_dnie',
-        cost: '100% Gratuito',
-        estimatedTime: 'Según tramitación (online o presencial)',
-        prerequisites: ['Haber extinguido la responsabilidad penal', 'Haber transcurrido el plazo de carencia sin delinquir'],
-        steps: [
-          { stepNumber: 1, title: 'Comprobar requisitos', instruction: 'Verifica que has cumplido la pena y los plazos de carencia legales.' },
-          { stepNumber: 2, title: 'Reunir documentación', instruction: 'Obtiene el certificado de antecedentes penales y el testimonio de sentencia firme.' },
-          { stepNumber: 3, title: 'Presentar solicitud', instruction: 'Accede a la Sede Electrónica del Ministerio de Justicia o acude presencialmente.' }
-        ],
-        antiScamAdvice: 'Utiliza siempre la sede electrónica oficial del Ministerio de Justicia.',
-        isTop10: true,
-        synonyms: ['antecedentes penales', 'cancelar antecedentes', 'borrar antecedentes', 'ministerio de justicia']
-      },    
       {
         id: 'cita-dni-pasaporte',
         rank: 2,
@@ -504,7 +83,7 @@
         synonyms: ['dni', 'renovar dni', 'cita dni', 'perdi el dni', 'pasaporte', 'renovar pasaporte', 'viajar', 'policia', 'comisaria']
       },
       {
-          id: 'cita-extranjeria',
+        id: 'cita-extranjeria',
         rank: 3,
         commonName: 'Cita de Extranjería (Huellas / TIE / Asilo)',
         officialName: 'Cita previa para trámites y autorizaciones de extranjería en oficinas y comisarías',
@@ -550,6 +129,30 @@
         antiScamAdvice: 'El teléfono oficial es el 060. Desconfía de números 807 con cobro adicional.',
         isTop10: true,
         synonyms: ['paro', 'pedir el paro', 'cobrar el paro', 'desempleo', 'sepe', 'inem', 'cita inem', 'subsidio', 'despido']
+      },
+      {
+        id: 'transferencia-vehiculo-dgt',
+        rank: 11,
+        commonName: 'Cambio de titularidad / Transferencia de vehículos',
+        officialName: 'Cambio de titularidad y transmisiones de vehículos (Compraventa)',
+        organismo: { name: 'Dirección General de Tráfico', acronym: 'DGT' },
+        category: 'trafico',
+        description: 'Trámite obligatorio para cambiar el titular de un coche, moto o furgoneta tras una compraventa o herencia.',
+        whyIsDifficult: 'Gestorías online cobran hasta 150€ de sobrecoste. Exige abonar previamente el ITP autonómico.',
+        officialDirectUrl: 'https://sede.dgt.gob.es/es/vehiculos/transferencias-de-vehiculos/',
+        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie'],
+        fastestAuthMethod: 'clave_pin',
+        cost: 'Tasa DGT 4.1: 55,70 € + ITP autonómico',
+        estimatedTime: '10 minutos online en DGT',
+        prerequisites: ['Contrato de compraventa firmado, DNI de ambas partes y justificante de pago del ITP (modelo 620/621)'],
+        steps: [
+          { stepNumber: 1, title: 'Liquidar ITP autonómico', instruction: 'Paga el impuesto de transmisiones patrimoniales en la web tributaria de tu CCAA para obtener el código CET.' },
+          { stepNumber: 2, title: 'Pagar tasa 4.1 en la DGT', instruction: 'Abona la tasa de 55,70€ en la pasarela de la DGT.' },
+          { stepNumber: 3, title: 'Presentar solicitud en sede', instruction: 'Introduce los datos con Cl@ve y descarga tu nuevo Permiso de Circulación provisional.' }
+        ],
+        antiScamAdvice: 'La tasa oficial son 55,70€ en sede.dgt.gob.es. Evita intermediarios de cobro abusivo.',
+        isTop10: false,
+        synonyms: ['coche', 'moto', 'vehiculo', 'vehículo', 'transferencia', 'cambio de nombre', 'cambiar de nombre un coche', 'vender coche', 'comprar coche', 'traspaso', 'segunda mano', 'itp']
       },
       {
         id: 'certificado-digital-fnmt',
@@ -624,6 +227,101 @@
         synonyms: ['renta', 'hacer la renta', 'declaracion de la renta', 'irpf', 'hacienda', 'aeat', 'casilla 505', 'borrador']
       },
       {
+        id: 'certificado-delitos-sexuales',
+        rank: 8,
+        commonName: 'Certificado de Delitos de Naturaleza Sexual',
+        officialName: 'Certificado de Delitos de Naturaleza Sexual y Trata de Seres Humanos',
+        organismo: { name: 'Ministerio de Justicia', acronym: 'Justicia' },
+        category: 'certificados',
+        description: 'Obligatorio por ley para cualquier persona que trabaje o ejerza voluntariado en contacto con menores de edad.',
+        whyIsDifficult: 'Se confunde con el Certificado de Antecedentes Penales ordinario (que sí cobra tasa, mientras este es gratuito).',
+        officialDirectUrl: 'https://sede.mjusticia.gob.es/es/tramites/certificado-delitos-naturaleza-sexual',
+        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie'],
+        fastestAuthMethod: 'clave_pin',
+        cost: '100% Gratuito (sin tasa)',
+        estimatedTime: '2 minutos (descarga inmediata)',
+        prerequisites: ['Cl@ve PIN o Certificado Digital'],
+        steps: [
+          { stepNumber: 1, title: 'Entrar al trámite', instruction: 'Accede a la sede electrónica de Justicia en el apartado exacto.' },
+          { stepNumber: 2, title: 'Identificación Cl@ve', instruction: 'Pulsa en tramitación telemática e identifícate en un clic.' },
+          { stepNumber: 3, title: 'Descarga PDF', instruction: 'El sistema valida con el Registro Central y emite el PDF oficial.' }
+        ],
+        antiScamAdvice: 'Este certificado no tiene tasa. No pagues en webs intermediarias.',
+        isTop10: true,
+        synonyms: ['delitos sexuales', 'trabajar con niños', 'menores', 'profesor', 'monitor de campamento', 'colegio']
+      },
+      {
+        id: 'certificado-padron-municipal',
+        rank: 9,
+        commonName: 'Pedir el Certificado o Volante de Empadronamiento',
+        officialName: 'Emisión de volante y certificado de empadronamiento municipal',
+        organismo: { name: 'Ayuntamientos Municipales', acronym: 'Ayuntamiento' },
+        category: 'identidad',
+        description: 'Acredita tu residencia habitual en un municipio. Exigido para médicos, colegios o renovar el DNI.',
+        whyIsDifficult: 'Cada uno de los 8.100 municipios de España tiene su propia sede con nombres y requisitos variables.',
+        officialDirectUrl: 'https://sede.madrid.es/portal/site/tramites/template.PAGE/menuitem.a13d4b6f64a50d24e964e964ccd08a0c/?vgnextoid=5f7e6f8516035210VgnVCM2000000c205a0aRCRD',
+        supportedAuth: ['clave_pin', 'certificado_dnie', 'presencial_cita'],
+        fastestAuthMethod: 'certificado_dnie',
+        cost: '100% Gratuito',
+        estimatedTime: 'Instantáneo telemático',
+        prerequisites: ['Cl@ve o Certificado y estar censado en el municipio'],
+        steps: [
+          { stepNumber: 1, title: 'Elegir Volante', instruction: 'El volante suele bastar para casi todo (médico, colegio, carné).' },
+          { stepNumber: 2, title: 'Acceder a tu sede', instruction: 'Entra en la sede electrónica municipal con certificado.' },
+          { stepNumber: 3, title: 'Descarga con CSV', instruction: 'Obtén el documento con Código Seguro de Verificación.' }
+        ],
+        antiScamAdvice: 'Desconfía de webs que cobran 40€ alegando enviar tu padrón por correo.',
+        isTop10: true,
+        synonyms: ['padron', 'padrón', 'empadronamiento', 'pedir el padron', 'volante de empadronamiento', 'cambio de domicilio', 'ayuntamiento']
+      },
+      {
+        id: 'tarjeta-sanitaria-europea',
+        rank: 10,
+        commonName: 'Pedir la Tarjeta Sanitaria Europea (TSE)',
+        officialName: 'Solicitud y renovación de la Tarjeta Sanitaria Europea (TSE)',
+        organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
+        category: 'salud',
+        description: 'Acredita el derecho a recibir asistencia sanitaria durante estancias temporales en países de la UE y Reino Unido.',
+        whyIsDifficult: 'Se envía por correo postal ordinario; si no tienes actualizada la dirección en la TGSS se extravía.',
+        officialDirectUrl: 'https://sede.seg-social.gob.es/wps/portal/sede/sede/Ciudadanos/Asistencia+sanitaria/20140411_1',
+        supportedAuth: ['sms_sin_certificado', 'clave_pin', 'certificado_dnie'],
+        fastestAuthMethod: 'sms_sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: '3 minutos (llega en 5 días al buzón)',
+        prerequisites: ['Estar dado de alta en la Seguridad Social'],
+        steps: [
+        { stepNumber: 1, title: 'Entrar a la sede INSS', instruction: 'Accede al trámite directo de TSE.' },
+        { stepNumber: 2, title: 'Comprobar domicilio', instruction: 'Verifica la dirección postal donde te enviarán la tarjeta.' },
+        { stepNumber: 3, title: 'Certificado provisional', instruction: 'Si viajas antes de 5 días, descarga el CPS en PDF que tiene idéntica validez.' }
+        ],
+        antiScamAdvice: 'La tarjeta es gratuita. Nunca introduzcas tarjetas de crédito.',
+        isTop10: true,
+        synonyms: ['tarjeta sanitaria europea', 'tse', 'viajar a europa', 'medico en europa', 'asistencia sanitaria extranjero']
+      },
+      {
+        id: 'puntos-carnet-dgt',
+        rank: 12,
+        commonName: 'Consultar Puntos del Carnet de Conducir',
+        officialName: 'Consulta de saldo de puntos y antecedentes del permiso de conducción',
+        organismo: { name: 'Dirección General de Tráfico', acronym: 'DGT' },
+        category: 'trafico',
+        description: 'Permite consultar el saldo exacto de puntos que tienes en tu carné de conducir y el historial de sanciones.',
+        whyIsDifficult: 'Abundan aplicaciones móviles no oficiales que capturan datos de conductores con fines publicitarios.',
+        officialDirectUrl: 'https://sede.dgt.gob.es/es/permisos-de-conducir/consulta-puntos/',
+        supportedAuth: ['clave_pin', 'clave_permanente', 'certificado_dnie'],
+        fastestAuthMethod: 'clave_pin',
+        cost: '100% Gratuito',
+        estimatedTime: '1 minuto',
+        prerequisites: ['Permiso de conducir español en vigor y Cl@ve'],
+        steps: [
+          { stepNumber: 1, title: 'Entrar con Cl@ve', instruction: 'Accede al servicio telemático de la DGT.' },
+          { stepNumber: 2, title: 'Saldo en pantalla', instruction: 'Tu saldo aparecerá de inmediato con el desglose de puntos.' }
+        ],
+        antiScamAdvice: 'La DGT nunca notifica multas ni puntos mediante enlaces por SMS.',
+        isTop10: false,
+        synonyms: ['puntos', 'puntos carnet', 'puntos dgt', 'consultar puntos', 'multa puntos', 'saldo de puntos']
+      },
+      {
         id: 'cita-medica-ccaa',
         rank: 13,
         commonName: 'Pedir Cita Médica de Atención Primaria (Centro de Salud)',
@@ -649,6 +347,28 @@
       }
     ];
 
+    const CCAA_LIST = [
+      { id: 'todas', name: 'Toda España' },
+      { id: 'andalucia', name: 'Andalucía' },
+      { id: 'aragon', name: 'Aragón' },
+      { id: 'asturias', name: 'Asturias' },
+      { id: 'baleares', name: 'Illes Balears' },
+      { id: 'canarias', name: 'Canarias' },
+      { id: 'cantabria', name: 'Cantabria' },
+      { id: 'castilla-la-mancha', name: 'Castilla-La Mancha' },
+      { id: 'castilla-y-leon', name: 'Castilla y León' },
+      { id: 'catalunya', name: 'Catalunya' },
+      { id: 'ceuta', name: 'Ceuta' },
+      { id: 'valencia', name: 'Comunitat Valenciana' },
+      { id: 'extremadura', name: 'Extremadura' },
+      { id: 'galicia', name: 'Galicia' },
+      { id: 'madrid', name: 'Comunidad de Madrid' },
+      { id: 'melilla', name: 'Melilla' },
+      { id: 'murcia', name: 'Región de Murcia' },
+      { id: 'navarra', name: 'Navarra' },
+      { id: 'pais-vasco', name: 'País Vasco' },
+      { id: 'la-rioja', name: 'La Rioja' }
+    ];
 
     const AUTH_LABELS = {
       sms_sin_certificado: '📱 Vía SMS / Sin certificado',
@@ -697,8 +417,8 @@
           matchedTokens++;
           score += 30;
         }
-      }
-
+        }
+      
       if (tokens.length > 1 && (matchedTokens / tokens.length) < 0.5) return 0;
       return score;
     }
@@ -749,16 +469,6 @@
       const savedList = useMemo(() => TRAMITES_DATA.filter(t => bookmarks.includes(t.id)), [bookmarks]);
 
       return (
-        <>
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 my-6 max-w-xl mx-auto shadow-sm">
-  <div className="flex items-center gap-3 mb-3">
-    <span className="bg-blue-100 text-blue-800 font-bold p-2 rounded-lg text-lg">🪪</span>
-    <div>
-      <h3 className="text-lg font-bold text-slate-900">Unir DNI en un solo PDF</h3>
-      <p className="text-xs text-slate-500">Combina ambas caras en un A4 listo para la Sede Oficial. 100% privado.</p>
-    </div>
-  </div>
-
         <div className="min-h-screen flex flex-col">
           {/* HEADER */}
           <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-blue-100/80 shadow-xs">
@@ -833,8 +543,7 @@
                     )}
                   </div>
 
-
-                                    {/* FILTROS RÁPIDOS */}
+                  {/* FILTROS RÁPIDOS */}
                   <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2">
                     <button
                       onClick={() => setOnlyTop10(!onlyTop10)}
@@ -871,6 +580,20 @@
                     >
                       <span>💻 Con Certificado</span>
                     </button>
+
+                    {/* SELECTOR CCAA */}
+                    <div className="relative inline-flex items-center">
+                      <select
+                        value={selectedCcaa}
+                        onChange={(e) => setSelectedCcaa(e.target.value)}
+                        className="pl-3 pr-7 py-1.5 bg-white border border-slate-200 hover:border-blue-300 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600 cursor-pointer appearance-none"
+                      >
+                        {CCAA_LIST.map((c) => (
+                          <option key={c.id} value={c.id}>{c.name}</option>
+                        ))}
+                      </select>
+                      <span className="absolute right-2 text-slate-400 pointer-events-none text-[10px]">▼</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -896,8 +619,8 @@
                   )}
                 </div>
               </div>
-
-              {filteredTramites.length === 0 ? (
+              
+                  {filteredTramites.length === 0 ? (
                 <div className="bg-white border border-slate-200 rounded-3xl p-12 text-center max-w-md mx-auto my-8 shadow-xs">
                   <h3 className="text-base font-bold text-slate-800">No encontramos trámites con estos filtros</h3>
                   <p className="text-xs text-slate-500 mt-1">Prueba con otra palabra como "coche", "vida laboral" o "paro".</p>
@@ -945,8 +668,7 @@
                           </div>
                         </div>
 
-
-                                                         <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-800 transition-colors leading-snug">
+                        <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-800 transition-colors leading-snug">
                           {tramite.commonName}
                         </h3>
 
@@ -1033,7 +755,7 @@
                     </ul>
                   </div>
 
-                  <div>
+                                    <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Pasos a seguir</h4>
                     <div className="space-y-2">
                       {activeModal.steps.map(s => (
@@ -1089,8 +811,8 @@
               </div>
             </div>
           )}
-      
-                             {/* MODAL GUÍA DE BASE DE DATOS */}
+
+          {/* MODAL GUÍA DE BASE DE DATOS */}
           {isDbGuideOpen && (
             <div className="fixed inset-0 z-50 bg-slate-900/70 flex items-center justify-center p-4">
               <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col shadow-2xl">
@@ -1120,6 +842,3 @@
 </div>
 </body>
 </html>
-
-
-    
