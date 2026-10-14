@@ -746,7 +746,41 @@
       }, [searchQuery, selectedAuth, onlyTop10]);
 
       const savedList = useMemo(() => TRAMITES_DATA.filter(t => bookmarks.includes(t.id)), [bookmarks]);
+      
+async function generarDNIUnificado() {
+  const frontInput = document.getElementById('tramiteaDniFront');
+  const backInput = document.getElementById('tramiteaDniBack');
 
+  if (!frontInput || !frontInput.files[0] || !backInput || !backInput.files[0]) {
+    alert('Por favor, selecciona las dos fotos de tu DNI (anverso y reverso).');
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const leerBase64 = (file) => new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload = () => res(reader.result);
+    reader.onerror = rej;
+    reader.readAsDataURL(file);
+  });
+
+  try {
+    const imgFront = await leerBase64(frontInput.files[0]);
+    const imgBack = await leerBase64(backInput.files[0]);
+
+    doc.setFontSize(14);
+    doc.text("Documento de Identidad (DNI)", 105, 20, { align: "center" });
+    doc.addImage(imgFront, 'JPEG', 30, 30, 150, 95);
+    doc.addImage(imgBack, 'JPEG', 30, 135, 150, 95);
+
+    doc.save('DNI_Unificado.pdf');
+  } catch (e) {
+    console.error(e);
+    alert('Error al generar el archivo. Asegúrate de subir imágenes válidas.');
+  }
+                                    }
       return (
         <>
         <div className="bg-white border border-slate-200 rounded-2xl p-6 my-6 max-w-xl mx-auto shadow-sm">
@@ -1101,45 +1135,7 @@
                 </div>
               </div>
             </div>
-          )}
-          </>
-          );
-      
-async function generarDNIUnificado() {
-  const frontInput = document.getElementById('tramiteaDniFront');
-  const backInput = document.getElementById('tramiteaDniBack');
-
-  if (!frontInput || !frontInput.files[0] || !backInput || !backInput.files[0]) {
-    alert('Por favor, selecciona las dos fotos de tu DNI (anverso y reverso).');
-    return;
-  }
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  const leerBase64 = (file) => new Promise((res, rej) => {
-    const reader = new FileReader();
-    reader.onload = () => res(reader.result);
-    reader.onerror = rej;
-    reader.readAsDataURL(file);
-  });
-
-  try {
-    const imgFront = await leerBase64(frontInput.files[0]);
-    const imgBack = await leerBase64(backInput.files[0]);
-
-    doc.setFontSize(14);
-    doc.text("Documento de Identidad (DNI)", 105, 20, { align: "center" });
-    doc.addImage(imgFront, 'JPEG', 30, 30, 150, 95);
-    doc.addImage(imgBack, 'JPEG', 30, 135, 150, 95);
-
-    doc.save('DNI_Unificado.pdf');
-  } catch (e) {
-    console.error(e);
-    alert('Error al generar el archivo. Asegúrate de subir imágenes válidas.');
-  }
-                                      }
-      
+          
           {/* MODAL GUÍA DE BASE DE DATOS */}
           {isDbGuideOpen && (
             <div className="fixed inset-0 z-50 bg-slate-900/70 flex items-center justify-center p-4">
@@ -1160,6 +1156,7 @@ async function generarDNIUnificado() {
             </div>
           )}
         </div>
+        </>
       );
     }
 
