@@ -35,6 +35,78 @@
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
       {
+        id: 'tramites-dgt',
+        rank: 1,
+        commonName: 'Trámites DGT',
+        officialName: 'Sede Electrónica de la Dirección General de Tráfico',
+        organismo: { name: 'Trámites DGT', acronym: 'DGT' },
+        category: 'movilidad',
+        description: 'Acceso a la Sede Electrónica de la DGT para la consulta de puntos, pago de multas, cambio de titularidad de vehículos e informes.',
+        whyIsDifficult: 'Las URLs específicas de la DGT cambian frecuentemente provocando errores 404, por lo que es mejor acceder directamente al portal general.',
+        officialDirectUrl: 'https://sede.dgt.gob.es/',
+        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
+        fastestAuthMethod: 'clave_permanente',
+        cost: '100% Gratuito (salvo pago de tasas específicas)',
+        estimatedTime: 'Inmediato',
+        prerequisites: ['Permiso de conducir o documentación del vehículo'],
+        steps: [
+          { stepNumber: 1, title: 'Acceder a la Sede DGT', instruction: 'Entra a la Sede Electrónica oficial de la Dirección General de Tráfico.' },
+          { stepNumber: 2, title: 'Seleccionar el trámite', instruction: 'Elige entre Puntos, Multas, Vehículos o Permisos de Conducir.' },
+          { stepNumber: 3, title: 'Identificación', instruction: 'Accede con Cl@ve, DNIe o certificado digital para completar la gestión.' }
+        ],
+        antiScamAdvice: 'Accede siempre desde el portal oficial de la DGT. No pagues por gestiones que son gratuitas.',
+        isTop10: true,
+        synonyms: ['dgt', 'puntos', 'multas', 'trafico', 'transferencia vehiculo', 'carnet conducir']
+      },
+            {
+        id: 'autorizacion-regreso',
+        rank: 11,
+        commonName: 'Autorización de Regreso a España',
+        officialName: 'Autorización de regreso para residentes',
+        organismo: { name: 'Ministerio de Política Territorial / Policía Nacional', acronym: 'Extranjería' },
+        category: 'extranjeria',
+        description: 'Permiso temporal para salir de España y volver a entrar mientras tu tarjeta de residencia o prórroga está en trámite de renovación.',
+        whyIsDifficult: 'Se debe solicitar con antelación justificada a un viaje inminente y requiere cita previa en la Oficina de Extranjería o Comisaría.',
+        officialDirectUrl: 'https://sede.administracionespublicas.gob.es',
+        supportedAuth: ['certificado_dnie', 'clave'],
+        fastestAuthMethod: 'certificado_dnie',
+        cost: 'Tasa oficial modelo 790 (código 052)',
+        estimatedTime: 'Expedición presencial rápida',
+        prerequisites: ['Tener la tarjeta de residencia caducada y la solicitud de renovación presentada en plazo'],
+        steps: [
+          { stepNumber: 1, title: 'Solicitar Cita', instruction: 'Pide cita previa para "Autorización de Regreso" en la Sede de Administraciones Públicas.' },
+          { stepNumber: 2, title: 'Preparar documentos', instruction: 'Lleva pasaporte, solicitud de renovación anterior y billetes de viaje que justifiquen el desplazamiento.' },
+          { stepNumber: 3, title: 'Obtención', instruction: 'Acude a la oficina asignada para que te expidan el documento de viaje.' }
+        ],
+        antiScamAdvice: 'No viajes fuera de España con la tarjeta caducada sin este permiso si tu renovación sigue pendiente.',
+        isTop10: false,
+        synonyms: ['autorizacion regreso', 'viajar con residencia caducada', 'permiso salida y entrada españa']
+      },
+            {
+        id: 'certificado-matrimonio-defuncion',
+        rank: 8,
+        commonName: 'Certificado de Matrimonio o Defunción',
+        officialName: 'Certificado de matrimonio o defunción (Ministerio de Justicia)',
+        organismo: { name: 'Ministerio de Justicia', acronym: 'MinJusticia' },
+        category: 'justicia',
+        description: 'Documento oficial que acredita el matrimonio o el fallecimiento de una persona, así como la fecha y lugar.',
+        whyIsDifficult: 'Hay múltiples webs de gestorías privadas que cobran tasas elevadas por tramitar un documento que es gratuito.',
+        officialDirectUrl: 'https://sede.mjusticia.gob.es',
+        supportedAuth: ['certificado_dnie', 'clave_permanente', 'sin_certificado'],
+        fastestAuthMethod: 'sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: 'Presencial o descarga online',
+        prerequisites: ['Datos registrales del acta (tomo, página, folio o datos de los inscritos)'],
+        steps: [
+          { stepNumber: 1, title: 'Acceder a la Sede', instruction: 'Entra en la Sede Electrónica del Ministerio de Justicia.' },
+          { stepNumber: 2, title: 'Seleccionar tipo', instruction: 'Elige entre certificado de matrimonio o de defunción y cubre los datos.' },
+          { stepNumber: 3, title: 'Obtención', instruction: 'Descarga el certificado con firma electrónica o solicítalo por correo.' }
+        ],
+        antiScamAdvice: 'Este trámite en el Ministerio de Justicia es totalmente gratuito. No uses intermediarios de pago.',
+        isTop10: false,
+        synonyms: ['matrimonio', 'defunción', 'certificado de defunción', 'certificado de matrimonio', 'partida de matrimonio', 'certificado de fallecimiento']
+      },
+            {
         id: 'prestacion-nacimiento-cuidado-menor',
         rank: 9,
         commonName: 'Baja por Maternidad / Paternidad',
