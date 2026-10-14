@@ -745,9 +745,12 @@
         return scored.map(s => s.item);
       }, [searchQuery, selectedAuth, onlyTop10]);
 
-      const savedList = useMemo(() => TRAMITES_DATA.filter(t => bookmarks.includes(t.id)), [bookmarks]);
-      
-async function generarDNIUnificado() {
+        const savedList = useMemo(() => {
+    return bookmarks.map(id => TRAMITES_DATA.find(t => t.id === id)).filter(Boolean);
+  }, [bookmarks]);
+
+  async function generarDNIUnificado() {
+                         
   const frontInput = document.getElementById('tramiteaDniFront');
   const backInput = document.getElementById('tramiteaDniBack');
 
