@@ -35,6 +35,78 @@
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
       {
+        id: 'registro-clave',
+        rank: 7,
+        commonName: 'Registrarse en Cl@ve',
+        officialName: 'Obtención de credenciales del sistema Cl@ve',
+        organismo: { name: 'Agencia Tributaria y Ministerio de Hacienda', acronym: 'AEAT / Cl@ve' },
+        category: 'digital',
+        description: 'Sistema de identificación electrónica para relacionarse con las Administraciones Públicas españolas.',
+        whyIsDifficult: 'Existen varios niveles de registro y requiere verificar el número de teléfono móvil.',
+        officialDirectUrl: 'https://clave.gob.es',
+        supportedAuth: ['videollamada', 'presencial', 'certificado_dnie'],
+        fastestAuthMethod: 'videollamada',
+        cost: '100% Gratuito',
+        estimatedTime: '10 minutos',
+        prerequisites: ['DNI o NIE y un teléfono móvil a tu nombre'],
+        steps: [
+          { stepNumber: 1, title: 'Acceso al registro', instruction: 'Entra en la web oficial de Cl@ve.' },
+          { stepNumber: 2, title: 'Elegir método', instruction: 'Selecciona registro por videollamada o con certificado digital.' },
+          { stepNumber: 3, title: 'Validación', instruction: 'Completa los datos y obtén tu activación permanente.' }
+        ],
+        antiScamAdvice: 'Cl@ve es un sistema público y gratuito del Estado español.',
+        isTop10: true,
+        synonyms: ['clave pin', 'clave permanente', 'registro clave', 'identidad digital']
+        },
+            {
+        id: 'certificado-nacimiento',
+        rank: 5,
+        commonName: 'Certificado de Nacimiento',
+        officialName: 'Certificado de nacimiento (Ministerio de Justicia)',
+        organismo: { name: 'Ministerio de Justicia', acronym: 'MinJusticia' },
+        category: 'justicia',
+        description: 'Documento oficial que acredita el hecho del nacimiento, fecha, hora y sexo.',
+        whyIsDifficult: 'Existen páginas intermediarias que cobran por solicitar un documento que es gratuito en la sede oficial.',
+        officialDirectUrl: 'https://sede.mjusticia.gob.es',
+        supportedAuth: ['certificado_dnie', 'clave_permanente', 'sin_certificado'],
+        fastestAuthMethod: 'sin_certificado',
+        cost: '100% Gratuito',
+        estimatedTime: 'Presencial o descarga online',
+        prerequisites: ['Datos registrales (tomo, página, folio o datos personales)'],
+        steps: [
+          { stepNumber: 1, title: 'Acceder a la Sede', instruction: 'Entra en el apartado de certificados del Ministerio de Justicia.' },
+          { stepNumber: 2, title: 'Rellenar datos', instruction: 'Indica los datos del inscrito o identifícate digitalmente.' },
+          { stepNumber: 3, title: 'Obtención', instruction: 'Descarga el certificado electrónico o recíbelo por correo postal.' }
+        ],
+        antiScamAdvice: 'El certificado oficial de nacimiento expedido por el Ministerio es gratuito.',
+        isTop10: true,
+        synonyms: ['nacimiento', 'partida de nacimiento', 'certificado literal']
+      },
+            {
+        id: 'cancelacion-antecedentes',
+        rank: 4,
+        commonName: 'Cancelación de Antecedentes Penales',
+        officialName: 'Cancelación de antecedentes penales',
+        organismo: { name: 'Ministerio de Justicia', acronym: 'MinJusticia' },
+        category: 'justicia',
+        description: 'Solicitud para cancelar antecedentes penales una vez cumplidas las penas y transcurridos los plazos legales.',
+        whyIsDifficult: 'Requiere cumplir plazos de carencia específicos según la condena y presentar la documentación exacta.',
+        officialDirectUrl: 'https://www.mjusticia.gob.es',
+        supportedAuth: ['certificado_dnie', 'clave_permanente'],
+        fastestAuthMethod: 'certificado_dnie',
+        cost: '100% Gratuito',
+        estimatedTime: 'Según tramitación (online o presencial)',
+        prerequisites: ['Haber extinguido la responsabilidad penal', 'Haber transcurrido el plazo de carencia sin delinquir'],
+        steps: [
+          { stepNumber: 1, title: 'Comprobar requisitos', instruction: 'Verifica que has cumplido la pena y los plazos de carencia legales.' },
+          { stepNumber: 2, title: 'Reunir documentación', instruction: 'Obtiene el certificado de antecedentes penales y el testimonio de sentencia firme.' },
+          { stepNumber: 3, title: 'Presentar solicitud', instruction: 'Accede a la Sede Electrónica del Ministerio de Justicia o acude presencialmente.' }
+        ],
+        antiScamAdvice: 'Utiliza siempre la sede electrónica oficial del Ministerio de Justicia.',
+        isTop10: true,
+        synonyms: ['antecedentes penales', 'cancelar antecedentes', 'borrar antecedentes', 'ministerio de justicia']
+      },    
+      {
         id: 'tramites-dgt',
         rank: 1,
         commonName: 'Trámites DGT',
