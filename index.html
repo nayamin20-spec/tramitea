@@ -35,6 +35,31 @@
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
       {
+    id: 'beca-general-mec',
+    rank: 15,
+    commonName: 'Beca MEC (Ministerio de Educación)',
+    officialName: 'Becas y ayudas para estudiantes de niveles postobligatorios',
+    organismo: { name: 'Ministerio de Educación, Formación Profesional y Deportes', acronym: 'MEFPD' },
+    category: 'educacion',
+    subcategory: 'becas',
+    description: 'Ayuda económica estatal para estudios universitarios, FP, Bachillerato y otros estudios postobligatorios.',
+    whyIsDifficult: 'Plazos de solicitud muy estrictos y requisitos económicos/académicos combinados.',
+    officialDirectUrl: 'https://sede.educacion.gob.es/informacion-ayuda/tramites/becas-ayudas.html',
+    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
+    fastestAuthMethod: 'clave_permanente',
+    cost: '100% Gratuito',
+    estimatedTime: '10-15 minutos',
+    prerequisites: ['Estar matriculado en estudios oficiales', 'Cumplir los umbrales de renta familiar'],
+    steps: [
+      { stepNumber: 1, title: 'Acceso a la Sede', instruction: 'Entra en la Sede Electrónica del Ministerio de Educación.' },
+      { stepNumber: 2, title: 'Formulario de datos', instruction: 'Rellena la información académica y los miembros de la unidad familiar.' },
+      { stepNumber: 3, title: 'Presentación', instruction: 'Firma y presenta la solicitud telemática guardando el justificante.' }
+    ],
+    antiScamAdvice: 'La solicitud de becas del Ministerio es totalmente gratuita. No pagues por tramitaciones externas.',
+    isTop10: false,
+    synonyms: ['beca mec', 'beca ministerio', 'beca universidad', 'beca bachillerato', 'beca fp']
+      },
+      {
         id: 'vida-laboral',
         rank: 1,
         commonName: 'Pedir la vida laboral',
