@@ -35,6 +35,59 @@
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
       {
+            id: 'subsidio-mayores-52',
+        rank: 12,
+        commonName: 'Subsidio para Mayores de 52 Años',
+        officialName: 'Subsidio por desempleo para trabajadores mayores de 52 años',
+        organismo: { name: 'Servicio Público de Empleo Estatal', acronym: 'SEPE' },
+        category: 'empleo',
+        description: 'Ayuda mensual para desempleados de 52 o más años que cotiza para la jubilación y se cobra hasta la edad legal de retiro.',
+        whyIsDifficult: 'Exige requisitos estrictos de cotización previa (15 años) y carencia de rentas personales.',
+        officialDirectUrl: 'https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo.html',
+        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
+        fastestAuthMethod: 'clave_permanente',
+        cost: '100% Gratuito',
+        estimatedTime: '5-10 minutos (solicitud online)',
+        prerequisites: [
+          'Tener 52 años cumplidos y estar en desempleo',
+          'Agotar paro o subsidio anterior',
+          'Mínimo 15 años cotizados (2 en los últimos 15) y 6 años en desempleo',
+          'Rentas propias inferiores al 75% del SMI'
+        ],
+        steps: [
+          { stepNumber: 1, title: 'Acceso a la Sede del SEPE', instruction: 'Entra en el apartado de Protección por desempleo del SEPE.' },
+          { stepNumber: 2, title: 'Identificación y datos', instruction: 'Accede con Cl@ve o certificado digital y completa la declaración de rentas personales.' },
+          { stepNumber: 3, title: 'Presentación', instruction: 'Adjunta el justificante bancario IBAN y firma la solicitud telemática.' }
+        ],
+        antiScamAdvice: 'La tramitación del subsidio del SEPE es totalmente gratuita. Desconfía de portales privados de pago.',
+        isTop10: false,
+        synonyms: ['subsidio 52 años', 'ayuda mayores 52', 'paro mayores 52', 'sepe 52 años', 'jubilacion anticipada subsidio']
+         },
+            {
+        id: 'canje-permiso-conducir-extranjero',
+        rank: 11,
+        commonName: 'Canje de Carné de Conducir Extranjero',
+        officialName: 'Canje de permisos de conducción extranjeros',
+        organismo: { name: 'Dirección General de Tráfico', acronym: 'DGT' },
+        category: 'extranjeria',
+        description: 'Homologa y cambia tu carné de conducir de tu país de origen por el permiso de conducir español.',
+        whyIsDifficult: 'Requiere cita previa presencial previa verificación del convenio con el país de origen.',
+        officialDirectUrl: 'https://www.dgt.es/nuestros-servicios/permisos-de-conducir/permisos-extranjeros-y-de-fuerzas-y-cuerpos-de-seguridad/canjes-de-permisos/canjes-de-permisos-extranjeros/',
+        supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin', 'presencial_cita'],
+        fastestAuthMethod: 'clave_permanente',
+        cost: 'Tasa 4.4 (28,87 €) para canjes directos',
+        estimatedTime: '15 minutos (solicitud cita) + trámite presencial',
+        prerequisites: ['Residencia legal en España', 'Permiso de conducir original en vigor', 'País con convenio con España'],
+        steps: [
+          { stepNumber: 1, title: 'Comprobar convenio', instruction: 'Verifica si España tiene acuerdo de canje con tu país de origen.' },
+          { stepNumber: 2, title: 'Solicitar cita DGT', instruction: 'Pide cita previa online en la Sede de la DGT para el trámite de Canjes Extranjeros.' },
+          { stepNumber: 3, title: 'Acudir a la jefatura', instruction: 'Presenta tu carné original, psicotécnico y paga la tasa oficial.' }
+        ],
+        antiScamAdvice: 'Cuidado con gestorías no oficiales que cobran tarifas excesivas por conseguir citas gratuitas de la DGT.',
+        isTop10: false,
+        synonyms: ['canje carne', 'homologar carnet conducir', 'dgt carnet extranjero', 'licencia conducir', 'canje dgt']
+            },
+        {
         id: 'alta-autonomos-reta',
     rank: 13,
     commonName: 'Alta en Autónomos (RETA y Hacienda)',
