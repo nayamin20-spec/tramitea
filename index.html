@@ -617,29 +617,29 @@ id: 'informe-vida-laboral',
     synonyms: ['tse', 'tarjeta sanitaria', 'viajar europa', 'sanidad extranjero', 'seguridad social']
   },
       {
-    id: 'cita-medica-tarjeta-sanitaria',
+    id: 'reconocimiento-derecho-asistencia-sanitaria',
     rank: 6,
-    commonName: 'Cita Médica y Tarjeta Sanitaria',
-    officialName: 'Gestión de Cita previa de Atención Primaria Autonómica',
-    organismo: { name: 'Servicios de Salud de las Comunidades Autónomas', acronym: 'SNS' },
+    commonName: 'Solicitud de Asistencia Sanitaria (Tarjeta Sanitaria)',
+    officialName: 'Reconocimiento del derecho a la asistencia sanitaria pública',
+    organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
     category: 'salud',
-    description: 'Solicita tu cita médica con tu médico de cabecera o enfermería en el servicio de salud de tu comunidad autónoma.',
-    whyIsDifficult: 'Cada comunidad autónoma cuenta con su propia aplicación y portal web oficial de salud.',
-    officialDirectUrl: 'https://www.sanidad.gob.es/ciudada/prestaciones/citas.htm',
-    supportedAuth: ['clave_permanente', 'certificado_dnie', 'cip_tarjeta_sanitaria'],
-    fastestAuthMethod: 'cip_tarjeta_sanitaria',
+    description: 'Obtén el documento acreditativo de tu derecho a la sanidad pública necesario para solicitar la tarjeta sanitaria en tu centro de salud.',
+    whyIsDifficult: 'Requiere estar previamente afiliado y dado de alta en el sistema de la Seguridad Social.',
+    officialDirectUrl: 'https://sede.seg-social.gob.es/wps/portal/sede/sede/Ciudadanos/asistencia+sanitaria/06asistencia+sanitaria',
+    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin', 'sms_sin_certificado'],
+    fastestAuthMethod: 'sms_sin_certificado',
     cost: '100% Gratuito',
-    estimatedTime: '2 minutos',
-    prerequisites: ['Tarjeta Sanitaria Individual (TSI) con código CIP'],
+    estimatedTime: '3-5 minutos',
+    prerequisites: ['Número de Afiliación a la Seguridad Social (NASS)', 'DNI/NIE en vigor'],
     steps: [
-      { stepNumber: 1, title: 'Selecciona tu comunidad', instruction: 'Accede al portal de salud correspondiente a tu región o usa su app oficial.' },
-      { stepNumber: 2, title: 'Identificación', instruction: 'Introduce los datos de tu tarjeta sanitaria (CIP y fecha de nacimiento).' },
-      { stepNumber: 3, title: 'Reserva', instruction: 'Elige fecha, hora y profesional sanitario.' }
+      { stepNumber: 1, title: 'Acceso a la Sede', instruction: 'Entra en el servicio de asistencia sanitaria de la Sede de la Seguridad Social.' },
+      { stepNumber: 2, title: 'Identificación', instruction: 'Accede mediante SMS, Cl@ve o Certificado Digital.' },
+      { stepNumber: 3, title: 'Descarga del documento', instruction: 'Obtén el justificante de derecho a la asistencia para presentarlo en tu centro de salud.' }
     ],
-    antiScamAdvice: 'Las citas sanitarias públicas son siempre gratuitas.',
+    antiScamAdvice: 'La tramitación y emisión del documento sanitario oficial es totalmente gratuita.',
     isTop10: true,
-    synonyms: ['cita medica', 'medico cabecera', 'salud', 'tarjeta sanitaria', 'ambulatorio', 'cita previa salud']
-      }
+    synonyms: ['tarjeta sanitaria', 'asistencia sanitaria', 'seguro medico', 'alta sanidad', 'inss sanidad', 'medico']
+        }
     ];
 
     const CCAA_LIST = [
