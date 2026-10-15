@@ -180,29 +180,29 @@
         synonyms: ['matrimonio', 'defunción', 'certificado de defunción', 'certificado de matrimonio', 'partida de matrimonio', 'certificado de fallecimiento']
       },
             {
-         id: 'prestacion-nacimiento-cuidado-menor',
+ id: 'prestacion-nacimiento-cuidado-menor',
     rank: 9,
     commonName: 'Baja por Maternidad / Paternidad',
-    officialName: 'Prestación por nacimiento y cuidado de menor',
+    officialName: 'Prestación por nacimiento, adopción y cuidado de menor',
     organismo: { name: 'Instituto Nacional de la Seguridad Social', acronym: 'INSS' },
     category: 'familia',
-    description: 'Solicitud del subsidio por maternidad o paternidad tras el nacimiento, adopción o acogimiento de un hijo.',
-    whyIsDifficult: 'Requiere haber registrado el certificado de maternidad/paternidad o el parte médico previamente.',
-    officialDirectUrl: 'https://sede.seg-social.gob.es/wps/portal/sede/sede/Ciudadanos/familia/283893',
+    description: 'Solicitud del subsidio económico y descanso laboral por nacimiento, adopción o acogimiento de un menor.',
+    whyIsDifficult: 'Las URLs internas de la Sede cambia según el perfil; este es el portal directo unificado de prestaciones de la Seguridad Social.',
+    officialDirectUrl: 'https://prestaciones.seg-social.es/servicio/prestacion-nacimiento-adopcion-cuidado-menor.html',
     supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
     fastestAuthMethod: 'clave_permanente',
     cost: '100% Gratuito',
-    estimatedTime: '10 minutos (resolución rápida)',
-    prerequisites: ['Registro del nacimiento', 'Certificado de la empresa (si procede)'],
+    estimatedTime: '5-10 minutos',
+    prerequisites: ['Registro del nacimiento o resolución de adopción', 'Estar de alta o en situación asimilada al alta en la Seguridad Social'],
     steps: [
-      { stepNumber: 1, title: 'Acceso a la Sede de la Seguridad Social', instruction: 'Entra en el servicio de prestación por nacimiento de la Sede del INSS.' },
-      { stepNumber: 2, title: 'Solicitud online', instruction: 'Identifícate con Cl@ve o Certificado e indica las fechas del permiso.' },
-      { stepNumber: 3, title: 'Confirmación', instruction: 'Adjunta la documentación requerida y descarga el justificante.' }
+      { stepNumber: 1, title: 'Acceso al Portal de Prestaciones', instruction: 'Entra en la Sede del Portal Oficial de Prestaciones de la Seguridad Social.' },
+      { stepNumber: 2, title: 'Identificación', instruction: 'Accede con Cl@ve, DNIe o Certificado Digital.' },
+      { stepNumber: 3, title: 'Solicitud y envío', instruction: 'Simula o rellena la solicitud de descanso y descarga el justificante oficial.' }
     ],
-    antiScamAdvice: 'La solicitud en la Sede Oficial del INSS es totalmente gratuita.',
+    antiScamAdvice: 'La tramitación en el portal oficial de la Seguridad Social es 100% gratuita.',
     isTop10: true,
     synonyms: ['maternidad', 'paternidad', 'baja bebe', 'nacimiento', 'inss', 'prestacion nacimiento']
-  },
+            },
       {
         id: 'deduccion-maternidad-modelo-140',
         rank: 10,
