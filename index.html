@@ -34,7 +34,80 @@
 
     // --- BASE DE DATOS DE TRÁMITES OFICIALES ---
     const TRAMITES_DATA = [
-      {
+          // --- GUÍAS DE TRÁMITES SECUNDARIOS / MENOS SOLICITADOS ---
+  {
+    id: 'guia-cambio-nombre-apellidos',
+    rank: 10,
+    commonName: 'Cambio de Nombre o Apellidos',
+    officialName: 'Inscripción de Cambio de Nombre y Apellidos en el Registro Civil',
+    organismo: { name: 'Ministerio de Justicia / Registro Civil', acronym: 'MJU' },
+    category: 'documentacion',
+    description: 'Guía y tramitación para la modificación, inversión o cambio de nombre propio y apellidos en el Registro Civil.',
+    whyIsDifficult: 'Requiere la presentación de expediente justificado y cita presencial en el Registro Civil correspondiente.',
+    officialDirectUrl: 'https://sede.mjusticia.gob.es/es/tramites/cambio-nombre-apellidos',
+    supportedAuth: ['clave_permanente', 'certificado_dnie', 'presencial_cita'],
+    fastestAuthMethod: 'clave_permanente',
+    cost: '100% Gratuito',
+    estimatedTime: '10-15 minutos (solicitud inicial)',
+    prerequisites: ['Certificado literal de nacimiento', 'Justificación del uso habitual o causa del cambio'],
+    steps: [
+      { stepNumber: 1, title: 'Acceso a la Sede de Justicia', instruction: 'Entra en el portal de trámites del Registro Civil en la Sede Electrónica de Justicia.' },
+      { stepNumber: 2, title: 'Solicitud y documentación', instruction: 'Cumplimenta el formulario y adjunta la documentación justificativa requerida.' },
+      { stepNumber: 3, title: 'Tramitación del expediente', instruction: 'Acude a la cita presencial en el Registro Civil de tu domicilio para la resolución.' }
+    ],
+    antiScamAdvice: 'La tramitación del expediente de cambio de nombre en el Registro Civil es completamente gratuita.',
+    isTop10: false,
+    synonyms: ['cambio nombre', 'cambio apellidos', 'invertir apellidos', 'registro civil', 'modificar nombre']
+  },
+  {
+    id: 'guia-impuesto-sucesiones-herencias',
+    rank: 11,
+    commonName: 'Tributación y Autoliquidación por Herencia',
+    officialName: 'Impuesto sobre Sucesiones y Donaciones (Modelo 650/651)',
+    organismo: { name: 'Agencia Tributaria / Comunidades Autónomas', acronym: 'AEAT' },
+    category: 'impuestos',
+    description: 'Guía para la autoliquidación y pago del Impuesto sobre Sucesiones y Donaciones tras la adquisición de bienes por herencia.',
+    whyIsDifficult: 'La gestión técnica y los tipos impositivos dependen de la Comunidad Autónoma de residencia del fallecido.',
+    officialDirectUrl: 'https://sede.agenciatributaria.gob.es/Sede/procedimientoini/G602.shtml',
+    supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
+    fastestAuthMethod: 'clave_permanente',
+    cost: 'Variable según bonificaciones autonómicas',
+    estimatedTime: '15-20 minutos',
+    prerequisites: ['Certificado de defunción y de últimas voluntades', 'Escritura de aceptación de herencia o inventario de bienes'],
+    steps: [
+      { stepNumber: 1, title: 'Acceso al portal tributario', instruction: 'Accede a la Sede de la Agencia Tributaria o del organismo tributario de tu CCAA.' },
+      { stepNumber: 2, title: 'Confección del Modelo 650', instruction: 'Introduce los datos de los causantes, herederos y valoración del caudal hereditario.' },
+      { stepNumber: 3, title: 'Presentación y Pago', instruction: 'Calcula la cuota a ingresar o bonificada y presenta la autoliquidación oficial.' }
+    ],
+    antiScamAdvice: 'Utiliza únicamente las plataformas e impresos oficiales de la AEAT o de las haciendas autonómicas.',
+    isTop10: false,
+    synonyms: ['herencia', 'impuesto sucesiones', 'modelo 650', 'donaciones', 'tributar herencia', 'sucesiones']
+  },
+  {
+    id: 'guia-denuncias-policia-nacional',
+    rank: 12,
+    commonName: 'Denuncias en Policía Nacional (Virtual/Oficina)',
+    officialName: 'Oficina Virtual de Denuncias de la Policía Nacional (SIDENPOL)',
+    organismo: { name: 'Cuerpo Nacional de Policía', acronym: 'CNP' },
+    category: 'seguridad',
+    description: 'Trámites de denuncia previa por internet para extravíos, hurtos, robos con fuerza o fraudes antes de acudir a la comisaría.',
+    whyIsDifficult: 'Ciertas denuncias (con violencia o autores identificados) exigen personarse inmediatamente en comisaría.',
+    officialDirectUrl: 'https://denuncias.policia.es/OVD/',
+    supportedAuth: ['clave_permanente', 'certificado_dnie', 'sin_certificado_datos_personales'],
+    fastestAuthMethod: 'sin_certificado_datos_personales',
+    cost: '100% Gratuito',
+    estimatedTime: '5-10 minutos',
+    prerequisites: ['DNI/NIE del denunciante', 'Detalles y datos concretos del hecho denunciado'],
+    steps: [
+      { stepNumber: 1, title: 'Acceso a SIDENPOL', instruction: 'Entra en la Oficina Virtual de Denuncias de la Policía Nacional.' },
+      { stepNumber: 2, title: 'Formulario de denuncia', instruction: 'Selecciona el tipo de delito (pérdida, hurto, estafa) y redacta los hechos.' },
+      { stepNumber: 3, title: 'Firma y ratificación', instruction: 'Acude a la comisaría seleccionada en 48 horas para firmar y validar la denuncia.' }
+    ],
+    antiScamAdvice: 'La Policía Nacional nunca cobra por tramitar o procesar una denuncia.',
+    isTop10: false,
+    synonyms: ['denuncia', 'denunciar robo', 'policia nacional', 'sidenpol', 'extravio dni', 'denuncia online']
+  },
+  {
             id: 'portal-unificado-tramites-dgt',
     rank: 7,
     commonName: 'Trámites DGT (Puntos, Vehículos y Carné)',
