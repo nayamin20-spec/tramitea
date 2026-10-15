@@ -569,28 +569,28 @@ id: 'informe-vida-laboral',
     synonyms: ['delitos sexuales', 'antecedentes penales', 'menores', 'ministerio justicia', 'certificado sexual']
   },
       {
-          id: 'volante-empadronamiento',
+            id: 'volante-empadronamiento',
     rank: 4,
     commonName: 'Certificado / Volante de Empadronamiento',
-    officialName: 'Solicitud de Certificado y Volante de Empadronamiento Municipal',
-    organismo: { name: 'Ayuntamientos / INE', acronym: 'AYUNTAMIENTO' },
+    officialName: 'Consulta de Datos del Padrón Municipal',
+    organismo: { name: 'Instituto Nacional de Estadística / Ayuntamientos', acronym: 'INE' },
     category: 'otros',
-    description: 'Obtén tu volante o certificado de empadronamiento oficial emitido directamente por tu ayuntamiento de residencia.',
-    whyIsDifficult: 'Cada municipio cuenta con su propia sede electrónica local para expedir el documento.',
-    officialDirectUrl: 'https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177031&menu=ulinks&idp=1254735573020',
+    description: 'Consulta tus datos padronales oficiales registrados en la base de datos nacional del INE.',
+    whyIsDifficult: 'El certificado físico municipal depende de cada ayuntamiento; la consulta estatal unificada se realiza a través del INE.',
+    officialDirectUrl: 'https://sede.ine.gob.es/tramite/datos_padron/',
     supportedAuth: ['clave_permanente', 'certificado_dnie', 'clave_pin'],
-    fastestAuthMethod: 'certificado_dnie',
+    fastestAuthMethod: 'clave_permanente',
     cost: '100% Gratuito',
-    estimatedTime: '2-3 minutos',
-    prerequisites: ['Estar empadronado en el municipio', 'Certificado digital o credenciales Cl@ve'],
+    estimatedTime: '2 minutos',
+    prerequisites: ['Estar empadronado en un municipio español', 'Acceso con Cl@ve o Certificado Digital'],
     steps: [
-      { stepNumber: 1, title: 'Acceso a la Sede de tu Ayuntamiento', instruction: 'Entra en el portal de tramitación online de tu consistorio local.' },
-      { stepNumber: 2, title: 'Identificación', instruction: 'Accede con certificado digital, DNIe o Cl@ve.' },
-      { stepNumber: 3, title: 'Descarga inmediata', instruction: 'Solicita el certificado o volante y descárgalo firmado digitalmente al instante.' }
+      { stepNumber: 1, title: 'Acceso a la Sede del INE', instruction: 'Entra en el servicio oficial de consulta de datos del Padrón del INE.' },
+      { stepNumber: 2, title: 'Identificación', instruction: 'Accede mediante sistema Cl@ve o certificado digital.' },
+      { stepNumber: 3, title: 'Consulta y verificación', instruction: 'Comprueba e imprime tus datos oficiales de inscripción padronal.' }
     ],
-    antiScamAdvice: 'El empadronamiento es gratuito en todas las sedes electrónicas municipales.',
+    antiScamAdvice: 'La consulta padronal en las sedes oficiales del Estado es totalmente gratuita.',
     isTop10: true,
-    synonyms: ['empadronamiento', 'padron', 'volante', 'certificado residencia', 'ayuntamiento']
+    synonyms: ['empadronamiento', 'padron', 'volante', 'certificado residencia', 'ine']
       },
       {
           id: 'tarjeta-sanitaria-europea',
