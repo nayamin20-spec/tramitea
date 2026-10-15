@@ -664,29 +664,29 @@ id: 'informe-vida-laboral',
         synonyms: ['puntos', 'puntos carnet', 'puntos dgt', 'consultar puntos', 'multa puntos', 'saldo de puntos']
       },
       {
-        id: 'cita-medica-ccaa',
-        rank: 13,
-        commonName: 'Pedir Cita Médica de Atención Primaria (Centro de Salud)',
-        officialName: 'Cita previa telemática para medicina de familia y enfermería autonómica',
-        organismo: { name: 'Servicios de Salud Autonómicos', acronym: 'Sanidad Autonómica' },
-        category: 'salud',
-        description: 'Reserva de turno para consulta presencial o telefónica con tu médico de cabecera en tu centro de salud.',
-        whyIsDifficult: 'La sanidad está transferida a las 17 Comunidades Autónomas; cada una dispone de su propia web y app.',
-        officialDirectUrl: 'https://www.sanidad.gob.es/servCiudadanos/home.htm',
-        supportedAuth: ['sms_sin_certificado', 'clave_pin', 'certificado_dnie'],
-        fastestAuthMethod: 'sms_sin_certificado',
-        cost: '100% Gratuito',
-        estimatedTime: '2 minutos',
-        prerequisites: ['Tarjeta sanitaria autonómica en vigor con número CIP/SIP'],
-        steps: [
-          { stepNumber: 1, title: 'Acceder a tu sanidad', instruction: 'Entra en el portal de salud de tu comunidad.' },
-          { stepNumber: 2, title: 'Introducir tarjeta', instruction: 'Solo necesitas el número que aparece en tu tarjeta plástica física.' },
-          { stepNumber: 3, title: 'Elegir día y hora', instruction: 'Selecciona consulta médica, de enfermería o baja laboral.' }
-        ],
-        antiScamAdvice: 'Las citas médicas públicas nunca requieren teléfonos de pago 902.',
-        isTop10: false,
-        synonyms: ['medico', 'médico', 'cita medico', 'centro de salud', 'ambulatorio', 'medico de cabecera', 'baja medica', 'receta']
-      }
+         id: 'cita-medica-tarjeta-sanitaria',
+    rank: 6,
+    commonName: 'Cita Médica y Tarjeta Sanitaria Digital',
+    officialName: 'Portal de Acceso a Servicios Sanitarios Estatales y Autonómicos',
+    organismo: { name: 'Ministerio de Sanidad / Servicios Autonómicos de Salud', acronym: 'SANIDAD' },
+    category: 'salud',
+    description: 'Acceso directo a la gestión de citas médicas de atención primaria y consulta de historia clínica del Sistema Nacional de Salud.',
+    whyIsDifficult: 'Cada Comunidad Autónoma gestiona las citas en su propio portal de salud.',
+    officialDirectUrl: 'https://www.sanidad.gob.es/ciudadanos/atencionSanitaria/home.htm',
+    supportedAuth: ['clave_permanente', 'certificado_dnie', 'cip_tarjeta_sanitaria'],
+    fastestAuthMethod: 'cip_tarjeta_sanitaria',
+    cost: '100% Gratuito',
+    estimatedTime: '2 minutos',
+    prerequisites: ['Tarjeta sanitaria individual con número CIP'],
+    steps: [
+      { stepNumber: 1, title: 'Acceso al portal', instruction: 'Entra en el servicio de salud oficial correspondiente a tu comunidad.' },
+      { stepNumber: 2, title: 'Identificación', instruction: 'Introduce el número de tu tarjeta sanitaria (CIP) y fecha de nacimiento.' },
+      { stepNumber: 3, title: 'Reserva', instruction: 'Selecciona médico de familia, pediatra o enfermería y confirma la hora.' }
+    ],
+    antiScamAdvice: 'El servicio público de salud nunca cobra por gestionar o pedir citas médicas.',
+    isTop10: true,
+    synonyms: ['cita medica', 'medico cabecera', 'salud', 'tarjeta sanitaria', 'medico']
+  }
     ];
 
     const CCAA_LIST = [
